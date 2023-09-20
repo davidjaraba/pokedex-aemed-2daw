@@ -3,8 +3,8 @@ package dev.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import dev.joseluisgs.models.Pokedex;
-import dev.joseluisgs.models.Pokemon;
+import dev.models.Pokedex;
+import dev.models.Pokemon;
 
 import java.io.File;
 import java.io.IOException;
