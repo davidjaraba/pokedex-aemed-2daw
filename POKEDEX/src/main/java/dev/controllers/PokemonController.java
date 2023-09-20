@@ -31,7 +31,7 @@ public class PokemonController {
     private void loadPokedex() {
         Path currentRelativePath = Paths.get("");
         String ruta = currentRelativePath.toAbsolutePath().toString();
-        String dir = ruta + File.separator + "data";
+        String dir = ruta + File.separator+"POKEDEX"+File.separator + "data";
         String paisesFile = dir + File.separator + "pokemon.json";
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
