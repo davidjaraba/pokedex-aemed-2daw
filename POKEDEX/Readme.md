@@ -14,7 +14,7 @@ DAVID
 
 
 JORGE
-- [ ] 2 - Obtener el nombre de los 5 ultimos pokemons.
+- [x] 2 - Obtener el nombre de los 5 ultimos pokemons.
 - [ ] 4 - Obtener la evolucion de Charmander.
 - [ ] 6 - Obtener el nombre de los pokemons con debilidad water o electric.
 - [ ] 8 - Pokemon con más debilidades.
