@@ -40,5 +40,21 @@ class PokemonControllerTest {
         assertEquals(3, agrupadosPorTipo.size());
     }
 
+    @Test
+    public void testMostCommonWeakness() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setWeaknesses(Arrays.asList("Fire", "Water"));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setWeaknesses(List.of("Fire"));
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setWeaknesses(List.of("Fire"));
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3));
+
+        String mostCommonWeakness = pokemonController.getMostCommonWeakness();
+
+        assertEquals("Fire", mostCommonWeakness);
+    }
+
 
 }
