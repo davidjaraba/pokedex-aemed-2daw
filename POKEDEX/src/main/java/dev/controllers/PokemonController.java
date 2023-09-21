@@ -53,4 +53,13 @@ public class PokemonController {
                 .getKey();
 
     }
+
+    public List<String> getLast5PokemonNames() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .sorted(Comparator.comparing(Pokemon::getId).reversed())
+                .limit(5)
+                .map(Pokemon::getName)
+                .collect(Collectors.toList());
+    }
 }

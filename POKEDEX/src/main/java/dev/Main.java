@@ -17,5 +17,7 @@ public class Main {
         agrupadosPorTipo.forEach((tipo, list) -> System.out.println(tipo + ": " + list.size()));
         System.out.println("Debilidad más común: ");
         System.out.println(pokeController.getMostCommonWeakness());
+        System.out.println("Últimos 5 pokemons: ");
+        pokeController.getLast5PokemonNames().forEach(System.out::println);
     }
 }

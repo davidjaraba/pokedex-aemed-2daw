@@ -23,6 +23,7 @@ class PokemonControllerTest {
 
     @Mock
     PokemonService pokemonService;
+
     @Test
 
     public void testAgruparPorTipos() {
@@ -54,6 +55,44 @@ class PokemonControllerTest {
         String mostCommonWeakness = pokemonController.getMostCommonWeakness();
 
         assertEquals("Fire", mostCommonWeakness);
+    }
+
+    @Test
+    public void getLast5PokemonName() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setName("Pokemon 1");
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setName("Pokemon 2");
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setName("Pokemon 3");
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setId(4);
+        pokemon4.setName("Pokemon 4");
+        Pokemon pokemon5 = new Pokemon();
+        pokemon5.setId(5);
+        pokemon5.setName("Pokemon 5");
+        Pokemon pokemon6 = new Pokemon();
+        pokemon6.setId(6);
+        pokemon6.setName("Pokemon 6");
+        Pokemon pokemon7 = new Pokemon();
+        pokemon7.setId(7);
+        pokemon7.setName("Pokemon 7");
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6, pokemon7));
+
+        List<String> last5PokemonName = pokemonController.getLast5PokemonNames();
+
+        assertAll(
+                () -> assertEquals(5, last5PokemonName.size()),
+                () -> assertEquals("Pokemon 7", last5PokemonName.get(0)),
+                () -> assertEquals("Pokemon 6", last5PokemonName.get(1)),
+                () -> assertEquals("Pokemon 5", last5PokemonName.get(2)),
+                () -> assertEquals("Pokemon 4", last5PokemonName.get(3)),
+                () -> assertEquals("Pokemon 3", last5PokemonName.get(4))
+        );
     }
 
 
