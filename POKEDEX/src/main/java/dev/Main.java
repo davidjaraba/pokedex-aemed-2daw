@@ -1,7 +1,5 @@
 package dev;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import dev.models.Pokemon;
 import dev.controllers.PokemonController;
 
@@ -19,15 +17,8 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Hello Pokedex!");
         var pokeController = PokemonController.getInstance();
-        Map<String, List<Pokemon>> agrupadosPorTipo = pokeController.getAgrupadosPorTipo();
-    }
-
-    private static void printPokemon(Pokemon pokemon) {
-        System.out.println(pokemon);
-    }
-
-    private static void printPokemonJson(Pokemon pokemon) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        System.out.println(gson.toJson(pokemon));
+        Map<String, List<Pokemon>> agrupadosPorTipo = pokeController.groupedByType();
+        System.out.println("Agrupados por tipo: ");
+        agrupadosPorTipo.forEach((tipo, list) -> System.out.println(tipo + ": " + list.size()));
     }
 }
