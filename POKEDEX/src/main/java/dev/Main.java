@@ -19,5 +19,7 @@ public class Main {
         System.out.println(pokeController.getMostCommonWeakness());
         System.out.println("Últimos 5 pokemons: ");
         pokeController.getLast5PokemonNames().forEach(System.out::println);
+        System.out.println("Evolución de Charmander: ");
+        System.out.println(pokeController.getNextEvolution("Charmander"));
     }
 }
