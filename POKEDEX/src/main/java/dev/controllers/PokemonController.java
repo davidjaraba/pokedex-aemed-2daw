@@ -15,9 +15,10 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PokemonController {
     private static PokemonController instance;
@@ -62,5 +63,21 @@ public class PokemonController {
 
     public Pokemon getPokemon(int index) {
         return getPokemons().get(index);
+    }
+
+    public Map<String, List<Pokemon>> getAgrupadosPorTipo() {
+        Stream<Pokemon> pokemons = getPokemons().stream();
+        Map<String, List<Pokemon>> map = new HashMap<>();
+        return pokemons.reduce(map, (accumulator, pokemon) -> {
+            List<String> types = pokemon.getType();
+            types.forEach(type -> {
+                List<Pokemon> group = accumulator.computeIfAbsent(type, k -> new ArrayList<>());
+                group.add(pokemon);
+            });
+            return accumulator;
+        }, (map1, map2) -> {
+            map1.putAll(map2);
+            return map1;
+        });
     }
 }

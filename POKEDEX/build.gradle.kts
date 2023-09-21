@@ -15,6 +15,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("com.google.code.gson:gson:2.10.1")
     testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
 }
 
 tasks.test {
