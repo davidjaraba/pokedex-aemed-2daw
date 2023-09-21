@@ -1,51 +1,48 @@
 package dev.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import dev.models.Pokedex;
 import dev.models.Pokemon;
+import dev.services.PokemonService;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class PokemonController {
     private static PokemonController instance;
-    private Pokedex pokedex;
+    private final PokemonService pokemonService;
 
-    private PokemonController() {
-        loadPokedex();
+    private PokemonController(PokemonService pokemonService) {
+        this.pokemonService = pokemonService;
     }
 
     public static PokemonController getInstance() {
         if (instance == null) {
-            instance = new PokemonController();
+            PokemonService pokemonService = new PokemonService();
+            instance = new PokemonController(pokemonService);
         }
         return instance;
     }
 
-    private void loadPokedex() {
-        Path currentRelativePath = Paths.get("");
-        String ruta = currentRelativePath.toAbsolutePath().toString();
-        String dir = ruta + File.separator+"POKEDEX"+File.separator + "data";
-        String paisesFile = dir + File.separator + "pokemon.json";
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        // Actualizar a try-with-resources
-        try (Reader reader = Files.newBufferedReader(Paths.get(paisesFile))) {
-            this.pokedex = gson.fromJson(reader, new TypeToken<Pokedex>() {}.getType());
-            System.out.println("Pokedex loaded! There are: " + pokedex.pokemon.size());
-        } catch (Exception e) {
-            System.out.println("Error loading Pokedex!");
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
 
     public Pokemon getPokemon(int index) {
-        return pokedex.pokemon.get(index);
+        return pokemonService.getPokemons().get(index);
+    }
+
+    public Map<String, List<Pokemon>> groupedByType() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        Map<String, List<Pokemon>> map = new HashMap<>();
+        return pokemons.reduce(map, (accumulator, pokemon) -> {
+            List<String> types = pokemon.getType();
+            types.forEach(type -> {
+                List<Pokemon> group = accumulator.computeIfAbsent(type, k -> new ArrayList<>());
+                group.add(pokemon);
+            });
+            return accumulator;
+        }, (map1, map2) -> {
+            map1.putAll(map2);
+            return map1;
+        });
     }
 }

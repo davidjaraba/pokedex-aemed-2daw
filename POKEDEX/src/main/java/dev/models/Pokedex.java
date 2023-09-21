@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 @Data
 public class Pokedex {
-    public ArrayList<Pokemon> pokemon;
+    private ArrayList<Pokemon> pokemon;
 }

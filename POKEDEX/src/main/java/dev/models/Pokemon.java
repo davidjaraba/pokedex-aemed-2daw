@@ -3,27 +3,27 @@ package dev.models;
 
 import lombok.Data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class Pokemon {
-    public int id;
-    public String num;
-    public String name;
-    public String img;
-    public ArrayList<String> type;
-    public String height;
-    public String weight;
-    public String candy;
-    public int candy_count;
-    public String egg;
-    public double spawn_chance;
-    public double avg_spawns;
-    public String spawn_time;
-    public ArrayList<Double> multipliers;
-    public ArrayList<String> weaknesses;
-    public ArrayList<NextEvolution> next_evolution;
-    public ArrayList<PrevEvolution> prev_evolution;
+    private int id;
+    private String num;
+    private String name;
+    private String img;
+    private List<String> type;
+    private double height;
+    private double weight;
+    private String candy;
+    private int candy_count;
+    private String egg;
+    private double spawn_chance;
+    private double avg_spawns;
+    private String spawn_time;
+    private List<Double> multipliers;
+    private List<String> weaknesses;
+    private List<NextEvolution> next_evolution;
+    private List<PrevEvolution> prev_evolution;
 
     @Override
     public String toString() {
