@@ -23,5 +23,5 @@ JORGE
 - [ ] 14 - Media de peso de los pokemons.
 - [ ] 16 - Media de evoluciones de los pokemons.
 - [x] 18 - Pokemons agrupados por tipo.
-- [ ] 21 - Sacar la debilidad más común
+- [x] 21 - Sacar la debilidad más común
 - [ ] 17 - Media de debilidades de los pokemons.
