@@ -1,5 +1,6 @@
 package dev.controllers;
 
+import dev.models.NextEvolution;
 import dev.models.Pokemon;
 import dev.services.PokemonService;
 
@@ -61,5 +62,26 @@ public class PokemonController {
                 .limit(5)
                 .map(Pokemon::getName)
                 .collect(Collectors.toList());
+    }
+
+    public Pokemon getNextEvolution(String name) {
+        List<Pokemon> pokemonList = pokemonService.getPokemons();
+        Stream<Pokemon> pokemons = pokemonList.stream();
+        Optional<Pokemon> optional = pokemons
+                .filter(pokemon -> pokemon.getName().equals(name))
+                .findFirst();
+        if (optional.isEmpty()) {
+            return null;
+        }
+        Pokemon pokemon = optional.get();
+        if (pokemon.getNext_evolution() == null || pokemon.getNext_evolution().size() < 1) {
+            return null;
+        }
+        NextEvolution nextEvolution = pokemon.getNext_evolution().get(0);
+        return pokemonList.stream()
+                .filter(p -> p.getNum().equals(nextEvolution.getNum()))
+                .findFirst()
+                .orElse(null);
+
     }
 }

@@ -66,6 +66,7 @@ public class PokemonUtils {
                     nextEvolutions = context.deserialize(nextEvolution, new TypeToken<List<NextEvolution>>() {
                     }.getType());
                 }
+                pokemon.setNext_evolution(nextEvolutions);
                 List<PrevEvolution> prevEvolutions =new ArrayList<>();
                 JsonElement prevEvolution = jsonObject.get("prev_evolution");
                 if (prevEvolution != null) {

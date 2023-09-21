@@ -1,5 +1,6 @@
 package dev.controllers;
 
+import dev.models.NextEvolution;
 import dev.models.Pokemon;
 import dev.services.PokemonService;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,6 @@ class PokemonControllerTest {
     PokemonService pokemonService;
 
     @Test
-
     public void testAgruparPorTipos() {
         Pokemon pokemon = new Pokemon();
         pokemon.setType(Arrays.asList("Grass", "Poison"));
@@ -93,6 +93,31 @@ class PokemonControllerTest {
                 () -> assertEquals("Pokemon 4", last5PokemonName.get(3)),
                 () -> assertEquals("Pokemon 3", last5PokemonName.get(4))
         );
+    }
+
+    @Test
+    public void getNextEvolutionTestWhenExists() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setNum("001");
+        pokemon.setName("Charmander");
+        NextEvolution nextEvolution = new NextEvolution();
+        nextEvolution.setName("Charmeleon");
+        nextEvolution.setNum("002");
+        pokemon.setNext_evolution(List.of(nextEvolution));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setNum("002");
+        pokemon2.setName("Charmeleon");
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2));
+        Pokemon evolution = pokemonController.getNextEvolution("Charmander");
+        assertEquals("Charmeleon", evolution.getName());
+    }
+
+    @Test
+    public void getNextEvolutionTestWhenNotExists() {
+        Pokemon evolution = pokemonController.getNextEvolution("Raichu");
+        assertNull(evolution);
     }
 
 
