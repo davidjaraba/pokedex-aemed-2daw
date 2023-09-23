@@ -29,5 +29,7 @@ public class Main {
         System.out.println(pokeController.getPokemonWithNoFireEvolution().stream().map(Pokemon::getName).toList());
         System.out.println("Pokémon más alto: ");
         System.out.println(pokeController.getTallestPokemon());
+        System.out.println("Media de peso de pokémons: ");
+        System.out.println(pokeController.getAverageWeight());
     }
 }
