@@ -84,4 +84,16 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public Pokemon getPokemonWithLongestName (){
+
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+
+        return pokemons.max(Comparator.comparing(pk -> {
+            String name = pk.getName();
+            return name.length();
+        })).orElse(null);
+
+    }
+
 }

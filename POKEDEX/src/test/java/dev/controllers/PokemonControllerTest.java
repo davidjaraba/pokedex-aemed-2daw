@@ -120,5 +120,23 @@ class PokemonControllerTest {
         assertNull(evolution);
     }
 
+    @Test
+    public void getPokemonWithLongestNameTest (){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName("zzzzzzzz");
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setName("ssddsdfg");
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setName("fffff");
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon,pokemon2,pokemon3));
+
+        Pokemon res = pokemonController.getPokemonWithLongestName();
+
+        assertEquals(res.getName(), "zzzzzzzz");
+
+    }
+
 
 }
