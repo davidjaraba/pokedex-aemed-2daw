@@ -56,7 +56,7 @@ public class Pokemon {
                 num + CSV_SEPARATOR +
                 name + CSV_SEPARATOR +
                 height + CSV_SEPARATOR +
-                weight + CSV_SEPARATOR + "\n";
+                weight + CSV_SEPARATOR;
     }
 }
 
