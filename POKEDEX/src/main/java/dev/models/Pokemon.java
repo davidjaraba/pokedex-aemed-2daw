@@ -7,6 +7,9 @@ import java.util.List;
 
 @Data
 public class Pokemon {
+
+    public static final char CSV_SEPARATOR = ';';
+
     private int id;
     private String num;
     private String name;
@@ -46,6 +49,14 @@ public class Pokemon {
                 ", next_evolution=" + next_evolution +
                 ", prev_evolution=" + prev_evolution +
                 '}';
+    }
+
+    public String toCSV() {
+        return String.valueOf(id) + CSV_SEPARATOR +
+                num + CSV_SEPARATOR +
+                name + CSV_SEPARATOR +
+                height + CSV_SEPARATOR +
+                weight + CSV_SEPARATOR + "\n";
     }
 }
 
