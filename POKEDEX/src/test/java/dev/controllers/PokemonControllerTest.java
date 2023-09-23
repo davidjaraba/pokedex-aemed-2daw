@@ -418,5 +418,58 @@ class PokemonControllerTest {
 
     }
 
+    @Test
+    public void getPokemonsByTypeTestEmpty(){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setNum("001");
+        pokemon.setName("Charmander");
+        pokemon.setType(List.of("Rock"));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setNum("002");
+        pokemon2.setName("Charmeleon");
+        pokemon2.setType(List.of("Poison"));
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setNum("003");
+        pokemon3.setName("Charizard");
+        pokemon3.setType(List.of("Flying"));
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3));
+
+        List<String> firePokems = pokemonController.getPokemonsByType("Fire");
+
+        assertEquals(0, firePokems.size());
+
+    }
+
+    @Test
+    public void getPokemonsByTypeTestNotEmpty(){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setNum("001");
+        pokemon.setName("Charmander");
+        pokemon.setType(List.of("Fire"));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setNum("002");
+        pokemon2.setName("Charmeleon");
+        pokemon2.setType(List.of("Fire"));
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setNum("003");
+        pokemon3.setName("Charizard");
+        pokemon3.setType(List.of("Flying"));
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3));
+
+        List<String> firePokems = pokemonController.getPokemonsByType("Fire");
+
+        assertEquals(2, firePokems.size());
+
+    }
 
 }

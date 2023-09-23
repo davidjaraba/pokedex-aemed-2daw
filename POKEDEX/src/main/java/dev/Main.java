@@ -51,6 +51,8 @@ public class Main {
             System.out.println(pokeController.getPokemonWithLongestName().getName());
             System.out.println("Pokemon más pesado: "+pokeController.getHeaviestPokemon());
             System.out.println("Pokemons con una sola debilidad: "+pokeController.getNumberOfPokemonsOnlyOneWeakness());
+            System.out.println("Pokemons tipo fire");
+            pokeController.getPokemonsByType("Fire").forEach(System.out::println);
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }

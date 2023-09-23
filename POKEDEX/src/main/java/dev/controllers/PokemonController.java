@@ -219,4 +219,14 @@ public class PokemonController {
     }
 
 
+
+    public List<String> getPokemonsByType(String type){
+
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+
+        return pokemons.filter(e -> e.getType().contains(type)).map(Pokemon::getName).toList();
+
+    }
+
+
 }
