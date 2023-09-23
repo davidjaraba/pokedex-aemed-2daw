@@ -31,5 +31,7 @@ public class Main {
         System.out.println(pokeController.getTallestPokemon());
         System.out.println("Media de peso de pokémons: ");
         System.out.println(pokeController.getAverageWeight());
+        System.out.println("Media de evoluciones de pokémons: ");
+        System.out.println(pokeController.getAverageEvolutionCount());
     }
 }

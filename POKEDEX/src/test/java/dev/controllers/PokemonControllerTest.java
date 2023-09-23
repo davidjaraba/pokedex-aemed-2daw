@@ -216,4 +216,36 @@ class PokemonControllerTest {
         double averageWeight = pokemonController.getAverageWeight();
         assertEquals(0.55, averageWeight);
     }
+
+    @Test
+    public void getAverageEvolutions() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setName("Charmander");
+        pokemon.setNum("001");
+        NextEvolution nextEvolution = new NextEvolution();
+        nextEvolution.setName("Charmeleon");
+        nextEvolution.setNum("002");
+        pokemon.setNext_evolution(List.of(nextEvolution));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setNum("002");
+        pokemon2.setName("Charmeleon");
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setName("Squirtle");
+        pokemon3.setNum("003");
+        NextEvolution nextEvolution2 = new NextEvolution();
+        nextEvolution2.setName("Wartortle");
+        nextEvolution2.setNum("004");
+        pokemon3.setNext_evolution(List.of(nextEvolution2));
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setId(4);
+        pokemon4.setNum("004");
+        pokemon4.setName("Wartortle");
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4));
+
+        double averageEvolutions = pokemonController.getAverageEvolutionCount();
+        assertEquals(0.5, averageEvolutions);
+    }
 }
