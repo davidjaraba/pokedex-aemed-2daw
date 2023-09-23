@@ -120,5 +120,31 @@ class PokemonControllerTest {
         assertNull(evolution);
     }
 
+    @Test
+    public void getWaterOrElectricPokemonsTest() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setName("Charmander");
+        pokemon.setType(List.of("Fire"));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setName("Pikachu");
+        pokemon2.setType(List.of("Electric"));
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setName("Squirtle");
+        pokemon3.setType(List.of("Water"));
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setId(4);
+        pokemon4.setName("Bulbasaur");
+        pokemon4.setType(List.of("Grass"));
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4));
+        List<Pokemon> waterOrElectricPokemons = pokemonController.getWaterOrElectricPokemons();
+        assertAll(
+                () -> assertEquals(2, waterOrElectricPokemons.size()),
+                () -> assertEquals("Pikachu", waterOrElectricPokemons.get(0).getName()),
+                () -> assertEquals("Squirtle", waterOrElectricPokemons.get(1).getName())
+        );
+    }
 
 }

@@ -21,5 +21,7 @@ public class Main {
         pokeController.getLast5PokemonNames().forEach(System.out::println);
         System.out.println("Evolución de Charmander: ");
         System.out.println(pokeController.getNextEvolution("Charmander"));
+        System.out.println("Pokémons eléctricos o de agua: ");
+        System.out.println(pokeController.getWaterOrElectricPokemons().stream().map(Pokemon::getName).toList());
     }
 }
