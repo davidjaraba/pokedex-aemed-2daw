@@ -337,4 +337,24 @@ class PokemonControllerTest {
 
 
 
+    @Test
+    public void getPokemonHeightAverageTest (){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setHeight(15);
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setHeight(5);
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setHeight(40);
+
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3));
+
+        double average = pokemonController.getPokemonAverageHeight();
+
+
+        assertEquals(20, average);
+
+    }
+
 }

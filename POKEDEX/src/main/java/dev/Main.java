@@ -46,6 +46,7 @@ public class Main {
                 System.out.println(a + " => " + b);
 
             });
+            System.out.println("Media de altura de los pokemons: "+pokeController.getPokemonAverageHeight()+" m");
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
