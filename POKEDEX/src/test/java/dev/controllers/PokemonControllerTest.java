@@ -303,4 +303,38 @@ class PokemonControllerTest {
     }
 
 
+    @Test
+    public void groupedByWeaknessTest (){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setWeaknesses(Arrays.asList("Fire", "Water"));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setWeaknesses(List.of("Fire"));
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setWeaknesses(List.of("Electric", "Poison"));
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setWeaknesses(List.of("Water"));
+        Pokemon pokemon5 = new Pokemon();
+        pokemon5.setWeaknesses(List.of("Ground", "Poison", "Fire"));
+
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4, pokemon5));
+
+
+        Map<String, Long> groupedByWeakness = pokemonController.groupedByWeakness();
+
+
+        assertAll(
+                () -> assertEquals(5, groupedByWeakness.size()),
+                () -> assertEquals(3, groupedByWeakness.get("Fire")),
+                () -> assertEquals(2, groupedByWeakness.get("Water")),
+                () -> assertEquals(1, groupedByWeakness.get("Electric")),
+                () -> assertNull(groupedByWeakness.get("Ghost"))
+        );
+
+
+    }
+
+
+
 }

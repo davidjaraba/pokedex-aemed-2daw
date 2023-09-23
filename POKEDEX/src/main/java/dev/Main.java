@@ -24,22 +24,28 @@ public class Main {
             System.out.println("Evolución de Charmander: ");
             System.out.println(pokeController.getNextEvolution("Charmander"));
             System.out.println("Agrupados pokemons por numero de evoluciones");
-        pokeController.groupedByEvolutions().forEach((numEvoluciones, list) -> System.out.println(numEvoluciones + ": " + list.size()));
+            pokeController.groupedByEvolutions().forEach((numEvoluciones, list) -> System.out.println(numEvoluciones + ": " + list.size()));
+            System.out.println("Pokémons eléctricos o de agua: ");
+            System.out.println(pokeController.getWaterOrElectricPokemons().stream().map(Pokemon::getName).toList());
+            System.out.println("Pokémon con más debilidades: ");
+            System.out.println(pokeController.getMostWeaknessPokemon());
+            System.out.println("Pokémons sin evolución de tipo fuego: ");
+            System.out.println(pokeController.getPokemonWithNoFireEvolution().stream().map(Pokemon::getName).toList());
+            System.out.println("Pokémon más alto: ");
+            System.out.println(pokeController.getTallestPokemon());
+            System.out.println("Media de peso de pokémons: ");
+            System.out.println(pokeController.getAverageWeight());
+            System.out.println("Media de evoluciones de pokémons: ");
+            System.out.println(pokeController.getAverageEvolutionCount());
+            System.out.println("Media de debilidades de pokémons: ");
+            System.out.println(pokeController.getAverageWeaknessCount());
+            pokeController.exportToCSV();
+            System.out.println("Pokemons agrupados por debilidad: ");
+            pokeController.groupedByWeakness().forEach((a, b) -> {
 
-        System.out.println("Pokémons eléctricos o de agua: ");
-        System.out.println(pokeController.getWaterOrElectricPokemons().stream().map(Pokemon::getName).toList());
-        System.out.println("Pokémon con más debilidades: ");
-        System.out.println(pokeController.getMostWeaknessPokemon());
-        System.out.println("Pokémons sin evolución de tipo fuego: ");
-        System.out.println(pokeController.getPokemonWithNoFireEvolution().stream().map(Pokemon::getName).toList());
-        System.out.println("Pokémon más alto: ");
-        System.out.println(pokeController.getTallestPokemon());
-        System.out.println("Media de peso de pokémons: ");
-        System.out.println(pokeController.getAverageWeight());
-        System.out.println("Media de evoluciones de pokémons: ");
-        System.out.println(pokeController.getAverageEvolutionCount());
-        System.out.println("Media de debilidades de pokémons: ");
-        System.out.println(pokeController.getAverageWeaknessCount());pokeController.exportToCSV();
+                System.out.println(a + " => " + b);
+
+            });
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
