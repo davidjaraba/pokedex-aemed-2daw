@@ -84,4 +84,11 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public List<String> tenFirstPokemons(){
+
+        return pokemonService.getPokemons().stream().limit(10).map(Pokemon::getName).toList();
+
+    }
+
 }
