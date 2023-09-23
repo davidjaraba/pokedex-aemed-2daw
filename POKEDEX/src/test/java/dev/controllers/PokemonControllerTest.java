@@ -397,5 +397,26 @@ class PokemonControllerTest {
         assertEquals(res, pokemon);
 
     }
+    @Test
+    public void getNumberOfPokemonsOnlyOneWeaknessTest(){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setWeaknesses(Arrays.asList("Fire", "Water"));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setWeaknesses(List.of("Fire"));
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setWeaknesses(List.of("Fire","Ground"));
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setWeaknesses(List.of("Poison"));
+
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3,pokemon4));
+
+        long result = pokemonController.getNumberOfPokemonsOnlyOneWeakness();
+
+        assertEquals(2, result);
+
+    }
+
 
 }

@@ -50,6 +50,7 @@ public class Main {
             System.out.println("Pokemon con el nombre más largo");
             System.out.println(pokeController.getPokemonWithLongestName().getName());
             System.out.println("Pokemon más pesado: "+pokeController.getHeaviestPokemon());
+            System.out.println("Pokemons con una sola debilidad: "+pokeController.getNumberOfPokemonsOnlyOneWeakness());
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
