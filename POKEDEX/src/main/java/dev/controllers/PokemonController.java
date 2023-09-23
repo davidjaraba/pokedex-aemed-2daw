@@ -84,4 +84,11 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public List<Pokemon> getWaterOrElectricPokemons() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .filter(pokemon -> pokemon.getType().contains("Water") || pokemon.getType().contains("Electric"))
+                .collect(Collectors.toList());
+    }
 }
