@@ -84,4 +84,13 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public Pokemon getHeaviestPokemon(){
+
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+
+        return pokemons.max(Comparator.comparingDouble(Pokemon::getWeight)).orElse(null);
+
+    }
+
 }

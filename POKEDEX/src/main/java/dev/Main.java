@@ -21,5 +21,7 @@ public class Main {
         pokeController.getLast5PokemonNames().forEach(System.out::println);
         System.out.println("Evolución de Charmander: ");
         System.out.println(pokeController.getNextEvolution("Charmander"));
+        System.out.println("Pokemon más pesado: "+pokeController.getHeaviestPokemon());
+
     }
 }

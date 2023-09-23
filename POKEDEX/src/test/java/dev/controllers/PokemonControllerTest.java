@@ -120,5 +120,28 @@ class PokemonControllerTest {
         assertNull(evolution);
     }
 
+    @Test
+    public void heaviestPokemonTest(){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setWeight(100);
+        pokemon.setName("Pokemon 1");
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setWeight(0.2);
+        pokemon2.setName("Pokemon 2");
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setWeight(20);
+        pokemon3.setName("Pokemon 3");
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon,pokemon2,pokemon3));
+
+        Pokemon res = pokemonController.getHeaviestPokemon();
+
+        assertEquals(res, pokemon);
+
+    }
 
 }
