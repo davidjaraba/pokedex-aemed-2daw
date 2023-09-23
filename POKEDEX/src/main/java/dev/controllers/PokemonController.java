@@ -84,4 +84,14 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public long getNumberOfPokemonsOnlyOneWeakness(){
+
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+
+        return pokemons.filter(e-> e.getWeaknesses().size() == 1).count();
+
+    }
+
+
 }
