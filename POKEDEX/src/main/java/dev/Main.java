@@ -21,5 +21,8 @@ public class Main {
         pokeController.getLast5PokemonNames().forEach(System.out::println);
         System.out.println("Evolución de Charmander: ");
         System.out.println(pokeController.getNextEvolution("Charmander"));
+        System.out.println("Agrupados pokemons por numero de evoluciones");
+        pokeController.groupedByEvolutions().forEach((numEvoluciones, list) -> System.out.println(numEvoluciones + ": " + list.size()));
+
     }
 }

@@ -84,4 +84,17 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public Map<Integer, List<Pokemon>> groupedByEvolutions (){
+
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        Map<Integer, List<Pokemon>> groupedPokemons = new HashMap<>();
+
+        groupedPokemons = pokemons.collect(Collectors.groupingBy(e-> e.getNext_evolution().size()));
+
+        return groupedPokemons;
+
+    }
+
+
 }
