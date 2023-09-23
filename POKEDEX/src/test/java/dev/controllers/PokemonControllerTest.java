@@ -146,6 +146,13 @@ class PokemonControllerTest {
                 () -> assertEquals("Squirtle", waterOrElectricPokemons.get(1).getName())
         );
     }
+    @Test
+    public void groupedByEvolutionsTest() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName("Charmander");
+        NextEvolution nextEvolution = new NextEvolution();
+        nextEvolution.setName("Charmeleon");
+        pokemon.setNext_evolution(List.of(nextEvolution));
 
     @Test
     public void getMostWeaknessPokemon() {
@@ -272,5 +279,27 @@ class PokemonControllerTest {
         double averageWeaknesses = pokemonController.getAverageWeaknessCount();
         assertEquals(1.0, averageWeaknesses);
     }
+
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setName("Evee");
+        pokemon2.setNext_evolution(List.of());
+
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setName("Charizard");
+        NextEvolution nextEvolution2 = new NextEvolution();
+        nextEvolution2.setName("Vaporeon");
+        NextEvolution nextEvolution3 = new NextEvolution();
+        nextEvolution3.setName("Vaporeon2");
+        pokemon3.setNext_evolution(List.of(nextEvolution2, nextEvolution3));
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3));
+        Map<Integer, List<Pokemon>> groupedByEvolutions = pokemonController.groupedByEvolutions();
+        assertAll(
+                () -> assertEquals(3, groupedByEvolutions.size()),
+                () -> assertEquals(1, groupedByEvolutions.get(0).size()),
+                () -> assertEquals(1, groupedByEvolutions.get(2).size())
+        );
+    }
+
 
 }
