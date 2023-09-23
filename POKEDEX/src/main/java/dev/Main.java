@@ -23,5 +23,7 @@ public class Main {
         System.out.println(pokeController.getNextEvolution("Charmander"));
         System.out.println("Pokémons eléctricos o de agua: ");
         System.out.println(pokeController.getWaterOrElectricPokemons().stream().map(Pokemon::getName).toList());
+        System.out.println("Pokémon con más debilidades: ");
+        System.out.println(pokeController.getMostWeaknessPokemon());
     }
 }

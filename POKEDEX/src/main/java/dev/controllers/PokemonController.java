@@ -91,4 +91,11 @@ public class PokemonController {
                 .filter(pokemon -> pokemon.getType().contains("Water") || pokemon.getType().contains("Electric"))
                 .collect(Collectors.toList());
     }
+
+    public Pokemon getMostWeaknessPokemon() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .max(Comparator.comparingInt(pokemon -> pokemon.getWeaknesses().size()))
+                .orElse(null);
+    }
 }
