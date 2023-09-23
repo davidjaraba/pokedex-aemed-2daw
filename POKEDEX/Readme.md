@@ -19,7 +19,7 @@ JORGE
 - [x] 6 - Obtener el nombre de los pokemons con debilidad water o electric.
 - [x] 8 - Pokemon con más debilidades.
 - [x] 10 - Pokemon con una evolucion que no es de tipo fire.
-- [ ] 12 - Pokemon más alto.
+- [x] 12 - Pokemon más alto.
 - [ ] 14 - Media de peso de los pokemons.
 - [ ] 16 - Media de evoluciones de los pokemons.
 - [x] 18 - Pokemons agrupados por tipo.

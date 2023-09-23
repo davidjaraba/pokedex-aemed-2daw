@@ -27,5 +27,7 @@ public class Main {
         System.out.println(pokeController.getMostWeaknessPokemon());
         System.out.println("Pokémons sin evolución de tipo fuego: ");
         System.out.println(pokeController.getPokemonWithNoFireEvolution().stream().map(Pokemon::getName).toList());
+        System.out.println("Pokémon más alto: ");
+        System.out.println(pokeController.getTallestPokemon());
     }
 }
