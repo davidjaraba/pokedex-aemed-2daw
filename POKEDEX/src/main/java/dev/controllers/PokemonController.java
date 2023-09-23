@@ -84,4 +84,13 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public double getPokemonAverageHeight(){
+
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+
+        return pokemons.mapToDouble(Pokemon::getHeight).average().orElse(0);
+
+    }
+
 }
