@@ -21,5 +21,12 @@ public class Main {
         pokeController.getLast5PokemonNames().forEach(System.out::println);
         System.out.println("Evolución de Charmander: ");
         System.out.println(pokeController.getNextEvolution("Charmander"));
+
+        System.out.println("Pokemons agrupados por debilidad: ");
+        pokeController.groupedByWeakness().forEach((a,b) -> {
+
+            System.out.println(a+" => "+b);
+
+        });
     }
 }

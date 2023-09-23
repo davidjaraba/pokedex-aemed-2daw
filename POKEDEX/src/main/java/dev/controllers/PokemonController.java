@@ -84,4 +84,18 @@ public class PokemonController {
                 .orElse(null);
 
     }
+
+    public Map<String, Long> groupedByWeakness(){
+
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+
+        Map<String, Long> groupedPokemons;
+
+        groupedPokemons = pokemons.map(Pokemon::getWeaknesses).flatMap(List::stream).collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+
+        return groupedPokemons;
+
+    }
+
+
 }
