@@ -126,4 +126,18 @@ public class PokemonController {
                 .average()
                 .orElse(0);
     }
+
+    public double getAverageEvolutionCount() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .mapToInt(p -> {
+                    if (p.getNext_evolution() == null) {
+                        return 0;
+                    }
+                    return p.getNext_evolution().size();
+                })
+                .average()
+                .orElse(0);
+    }
+
 }
