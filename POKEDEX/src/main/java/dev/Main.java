@@ -53,6 +53,8 @@ public class Main {
             System.out.println("Pokemons con una sola debilidad: "+pokeController.getNumberOfPokemonsOnlyOneWeakness());
             System.out.println("Pokemons tipo fire");
             pokeController.getPokemonsByType("Fire").forEach(System.out::println);
+            System.out.println("10 primeros");
+            pokeController.tenFirstPokemons().forEach(System.out::println);
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }

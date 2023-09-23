@@ -471,5 +471,62 @@ class PokemonControllerTest {
         assertEquals(2, firePokems.size());
 
     }
+    @Test
+    public void tenFirstPokemonsTestWithTen(){
+
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setName("Pokemon 1");
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setName("Pokemon 2");
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setName("Pokemon 3");
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setId(4);
+        pokemon4.setName("Pokemon 4");
+        Pokemon pokemon5 = new Pokemon();
+        pokemon5.setId(5);
+        pokemon5.setName("Pokemon 5");
+        Pokemon pokemon6 = new Pokemon();
+        pokemon6.setId(6);
+        pokemon6.setName("Pokemon 6");
+        Pokemon pokemon7 = new Pokemon();
+        pokemon7.setId(7);
+        pokemon7.setName("Pokemon 7");
+        Pokemon pokemon8 = new Pokemon();
+        pokemon8.setId(8);
+        pokemon8.setName("Pokemon 8");
+        Pokemon pokemon9 = new Pokemon();
+        pokemon9.setId(9);
+        pokemon9.setName("Pokemon 9");
+        Pokemon pokemon10 = new Pokemon();
+        pokemon10.setId(10);
+        pokemon10.setName("Pokemon 10");
+        Pokemon pokemon11 = new Pokemon();
+        pokemon11.setId(11);
+        pokemon11.setName("Pokemon 11");
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4, pokemon5, pokemon6, pokemon7, pokemon8, pokemon9, pokemon10, pokemon11));
+
+        List<String> tenFirstPokemons = pokemonController.tenFirstPokemons();
+
+        assertAll(
+                () -> assertEquals(10, tenFirstPokemons.size()),
+                () -> assertEquals("Pokemon 1", tenFirstPokemons.get(0)),
+                () -> assertEquals("Pokemon 2", tenFirstPokemons.get(1)),
+                () -> assertEquals("Pokemon 3", tenFirstPokemons.get(2)),
+                () -> assertEquals("Pokemon 4", tenFirstPokemons.get(3)),
+                () -> assertEquals("Pokemon 5", tenFirstPokemons.get(4)),
+                () -> assertEquals("Pokemon 6", tenFirstPokemons.get(5)),
+                () -> assertEquals("Pokemon 7", tenFirstPokemons.get(6)),
+                () -> assertEquals("Pokemon 8", tenFirstPokemons.get(7)),
+                () -> assertEquals("Pokemon 9", tenFirstPokemons.get(8)),
+                () -> assertEquals("Pokemon 10", tenFirstPokemons.get(9))
+        );
+
+    }
+
 
 }
