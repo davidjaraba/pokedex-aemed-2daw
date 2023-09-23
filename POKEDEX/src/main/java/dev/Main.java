@@ -25,5 +25,7 @@ public class Main {
         System.out.println(pokeController.getWaterOrElectricPokemons().stream().map(Pokemon::getName).toList());
         System.out.println("Pokémon con más debilidades: ");
         System.out.println(pokeController.getMostWeaknessPokemon());
+        System.out.println("Pokémons sin evolución de tipo fuego: ");
+        System.out.println(pokeController.getPokemonWithNoFireEvolution().stream().map(Pokemon::getName).toList());
     }
 }

@@ -18,7 +18,7 @@ JORGE
 - [x] 4 - Obtener la evolucion de Charmander.
 - [x] 6 - Obtener el nombre de los pokemons con debilidad water o electric.
 - [x] 8 - Pokemon con más debilidades.
-- [ ] 10 - Pokemon con una evolucion que no es de tipo fire.
+- [x] 10 - Pokemon con una evolucion que no es de tipo fire.
 - [ ] 12 - Pokemon más alto.
 - [ ] 14 - Media de peso de los pokemons.
 - [ ] 16 - Media de evoluciones de los pokemons.

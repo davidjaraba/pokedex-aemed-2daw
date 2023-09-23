@@ -98,4 +98,17 @@ public class PokemonController {
                 .max(Comparator.comparingInt(pokemon -> pokemon.getWeaknesses().size()))
                 .orElse(null);
     }
+
+    public List<Pokemon> getPokemonWithNoFireEvolution() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .filter(pokemon -> {
+                    Stream<Pokemon> pokemonStream = pokemonService.getPokemons().stream();
+                    List<String> evolutionNums = pokemon.getNext_evolution().stream().map(NextEvolution::getNum).toList();
+                    return pokemonStream
+                            .filter(p -> evolutionNums.contains(p.getNum()))
+                            .noneMatch(p -> p.getType().contains("Fire"));
+                })
+                .toList();
+    }
 }
