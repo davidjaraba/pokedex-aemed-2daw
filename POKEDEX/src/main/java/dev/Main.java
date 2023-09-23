@@ -47,6 +47,8 @@ public class Main {
 
             });
             System.out.println("Media de altura de los pokemons: "+pokeController.getPokemonAverageHeight()+" m");
+            System.out.println("Pokemon con el nombre más largo");
+            System.out.println(pokeController.getPokemonWithLongestName().getName());
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
