@@ -118,4 +118,12 @@ public class PokemonController {
                 .max(Comparator.comparingDouble(Pokemon::getHeight))
                 .orElse(null);
     }
+
+    public double getAverageWeight() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .mapToDouble(Pokemon::getWeight)
+                .average()
+                .orElse(0);
+    }
 }

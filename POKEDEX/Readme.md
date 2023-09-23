@@ -20,7 +20,7 @@ JORGE
 - [x] 8 - Pokemon con más debilidades.
 - [x] 10 - Pokemon con una evolucion que no es de tipo fire.
 - [x] 12 - Pokemon más alto.
-- [ ] 14 - Media de peso de los pokemons.
+- [x] 14 - Media de peso de los pokemons.
 - [ ] 16 - Media de evoluciones de los pokemons.
 - [x] 18 - Pokemons agrupados por tipo.
 - [x] 21 - Sacar la debilidad más común
