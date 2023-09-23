@@ -147,4 +147,26 @@ class PokemonControllerTest {
         );
     }
 
+    @Test
+    public void getMostWeaknessPokemon() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setName("Charmander");
+        pokemon.setWeaknesses(List.of("Water"));
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setName("Pikachu");
+        pokemon2.setWeaknesses(List.of("Fire"));
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setName("Squirtle");
+        pokemon3.setWeaknesses(List.of("Fire"));
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setId(4);
+        pokemon4.setName("Bulbasaur");
+        pokemon4.setWeaknesses(List.of("Fire"));
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4));
+        Pokemon mostWeaknessPokemon = pokemonController.getMostWeaknessPokemon();
+        assertEquals("Charmander", mostWeaknessPokemon.getName());
+    }
 }
