@@ -33,5 +33,7 @@ public class Main {
         System.out.println(pokeController.getAverageWeight());
         System.out.println("Media de evoluciones de pokémons: ");
         System.out.println(pokeController.getAverageEvolutionCount());
+        System.out.println("Media de debilidades de pokémons: ");
+        System.out.println(pokeController.getAverageWeaknessCount());
     }
 }
