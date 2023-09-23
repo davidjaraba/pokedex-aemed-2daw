@@ -140,4 +140,11 @@ public class PokemonController {
                 .orElse(0);
     }
 
+    public double getAverageWeaknessCount() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .mapToInt(p -> p.getWeaknesses().size())
+                .average()
+                .orElse(0);
+    }
 }
