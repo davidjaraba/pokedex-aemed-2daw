@@ -3,6 +3,7 @@ package dev;
 import dev.models.Pokemon;
 import dev.controllers.PokemonController;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
@@ -10,18 +11,19 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello Pokedex!");
-        var pokeController = PokemonController.getInstance();
-        Map<String, List<Pokemon>> agrupadosPorTipo = pokeController.groupedByType();
-        System.out.println("Agrupados por tipo: ");
-        agrupadosPorTipo.forEach((tipo, list) -> System.out.println(tipo + ": " + list.size()));
-        System.out.println("Debilidad más común: ");
-        System.out.println(pokeController.getMostCommonWeakness());
-        System.out.println("Últimos 5 pokemons: ");
-        pokeController.getLast5PokemonNames().forEach(System.out::println);
-        System.out.println("Evolución de Charmander: ");
-        System.out.println(pokeController.getNextEvolution("Charmander"));
-        System.out.println("Agrupados pokemons por numero de evoluciones");
+        try {
+            System.out.println("Hello Pokedex!");
+            var pokeController = PokemonController.getInstance();
+            Map<String, List<Pokemon>> agrupadosPorTipo = pokeController.groupedByType();
+            System.out.println("Agrupados por tipo: ");
+            agrupadosPorTipo.forEach((tipo, list) -> System.out.println(tipo + ": " + list.size()));
+            System.out.println("Debilidad más común: ");
+            System.out.println(pokeController.getMostCommonWeakness());
+            System.out.println("Últimos 5 pokemons: ");
+            pokeController.getLast5PokemonNames().forEach(System.out::println);
+            System.out.println("Evolución de Charmander: ");
+            System.out.println(pokeController.getNextEvolution("Charmander"));
+            System.out.println("Agrupados pokemons por numero de evoluciones");
         pokeController.groupedByEvolutions().forEach((numEvoluciones, list) -> System.out.println(numEvoluciones + ": " + list.size()));
 
         System.out.println("Pokémons eléctricos o de agua: ");
@@ -37,6 +39,9 @@ public class Main {
         System.out.println("Media de evoluciones de pokémons: ");
         System.out.println(pokeController.getAverageEvolutionCount());
         System.out.println("Media de debilidades de pokémons: ");
-        System.out.println(pokeController.getAverageWeaknessCount());
+        System.out.println(pokeController.getAverageWeaknessCount());pokeController.exportToCSV();
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

@@ -4,6 +4,7 @@ import dev.models.NextEvolution;
 import dev.models.Pokemon;
 import dev.services.PokemonService;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ public class PokemonController {
         this.pokemonService = pokemonService;
     }
 
-    public static PokemonController getInstance() {
+    public static PokemonController getInstance() throws FileNotFoundException {
         if (instance == null) {
             PokemonService pokemonService = new PokemonService();
             instance = new PokemonController(pokemonService);
@@ -160,4 +161,8 @@ public class PokemonController {
     }
 
 
+
+    public void exportToCSV() {
+        pokemonService.exportToCSV();
+    }
 }
