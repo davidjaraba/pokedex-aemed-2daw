@@ -169,4 +169,27 @@ class PokemonControllerTest {
         Pokemon mostWeaknessPokemon = pokemonController.getMostWeaknessPokemon();
         assertEquals("Charmander", mostWeaknessPokemon.getName());
     }
+
+    @Test
+    public void getTallestPokemonTest() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setId(1);
+        pokemon.setName("Charmander");
+        pokemon.setHeight(0.6);
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setId(2);
+        pokemon2.setName("Pikachu");
+        pokemon2.setHeight(0.4);
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setId(3);
+        pokemon3.setName("Squirtle");
+        pokemon3.setHeight(0.5);
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setId(4);
+        pokemon4.setName("Bulbasaur");
+        pokemon4.setHeight(0.7);
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4));
+        Pokemon tallestPokemon = pokemonController.getTallestPokemon();
+        assertEquals("Bulbasaur", tallestPokemon.getName());
+    }
 }

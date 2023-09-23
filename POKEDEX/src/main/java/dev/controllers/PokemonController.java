@@ -111,4 +111,11 @@ public class PokemonController {
                 })
                 .toList();
     }
+
+    public Pokemon getTallestPokemon() {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons
+                .max(Comparator.comparingDouble(Pokemon::getHeight))
+                .orElse(null);
+    }
 }
