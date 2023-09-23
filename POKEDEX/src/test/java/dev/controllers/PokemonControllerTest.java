@@ -146,13 +146,6 @@ class PokemonControllerTest {
                 () -> assertEquals("Squirtle", waterOrElectricPokemons.get(1).getName())
         );
     }
-    @Test
-    public void groupedByEvolutionsTest() {
-        Pokemon pokemon = new Pokemon();
-        pokemon.setName("Charmander");
-        NextEvolution nextEvolution = new NextEvolution();
-        nextEvolution.setName("Charmeleon");
-        pokemon.setNext_evolution(List.of(nextEvolution));
 
     @Test
     public void getMostWeaknessPokemon() {
@@ -280,6 +273,14 @@ class PokemonControllerTest {
         assertEquals(1.0, averageWeaknesses);
     }
 
+    @Test
+    public void groupedByEvolutionsTest() {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName("Charmander");
+        NextEvolution nextEvolution = new NextEvolution();
+        nextEvolution.setName("Charmeleon");
+        pokemon.setNext_evolution(List.of(nextEvolution));
+        
         Pokemon pokemon2 = new Pokemon();
         pokemon2.setName("Evee");
         pokemon2.setNext_evolution(List.of());
