@@ -59,6 +59,12 @@ public class Main {
             pokeController.tenFirstPokemons().forEach(System.out::println);
             System.out.println("Pokemons almacenados en el CSV");
             pokeController.getPokemonsFromCSV().forEach(System.out::println);
+            System.out.println("Importando CSV a BD");
+            pokeController.importCsvToDB();
+            System.out.println("Pokemons almacenados en la BD");
+            pokeController.readAllPokemonsFromDB().forEach(System.out::println);
+            System.out.println("Obteniendo datos de pikachu");
+            System.out.println(pokeController.getPokemonFromDBByName("Pikachu"));
 
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());

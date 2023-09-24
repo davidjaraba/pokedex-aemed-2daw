@@ -3,8 +3,10 @@ package dev.controllers;
 import dev.db.DatabaseManager;
 import dev.models.NextEvolution;
 import dev.models.Pokemon;
+import dev.models.SqlCommand;
 import dev.services.PokemonService;
 
+import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -241,6 +243,28 @@ public class PokemonController {
 
     public List<Pokemon> getPokemonsFromCSV(){
         return pokemonService.getCSV().orElseThrow();
+    }
+
+    public List<Pokemon> importCsvToDB() throws SQLException, IOException {
+
+        List<Pokemon> readedPokemons = getPokemonsFromCSV();
+
+        DatabaseManager dbManager = DatabaseManager.getInstance();
+
+        readedPokemons.stream().forEach(pokemonService::insertPokemon);
+
+        return readedPokemons;
+
+    }
+
+    public List<Pokemon> readAllPokemonsFromDB() throws SQLException, IOException {
+
+        return pokemonService.findAll();
+
+    }
+
+    public Pokemon getPokemonFromDBByName(String name) throws SQLException, IOException {
+        return pokemonService.findPokemonByName(name).orElseThrow();
     }
 
 

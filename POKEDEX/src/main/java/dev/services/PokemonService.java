@@ -12,12 +12,14 @@ import dev.utils.PokemonUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -108,6 +110,7 @@ public class PokemonService {
 
 
     public Optional<Pokemon> insertPokemon(Pokemon pokemon) {
+
         try {
             SqlCommand sqlCommand = new SqlCommand("INSERT INTO pokemon (id, num, name, height, weight) VALUES (?, ?, ?, ?, ?)");
             sqlCommand.addParam(pokemon.getId());
@@ -115,7 +118,7 @@ public class PokemonService {
             sqlCommand.addParam(pokemon.getName());
             sqlCommand.addParam(pokemon.getHeight());
             sqlCommand.addParam(pokemon.getWeight());
-            dbManager.executeQuery(sqlCommand);
+            dbManager.executeUpdate(sqlCommand);
             return Optional.of(pokemon);
         } catch (Exception e) {
             System.out.println("Error insertando pokemon!");
@@ -124,7 +127,7 @@ public class PokemonService {
         }
     }
 
-    public Optional<Pokemon> findPokemonByName(String name){
+    public Optional<Pokemon> findPokemonByName(String name) throws SQLException, IOException {
 
         try {
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM pokemon WHERE lower(name) = ?");
@@ -145,6 +148,34 @@ public class PokemonService {
         }
 
         return Optional.empty();
+
+    }
+
+    public List<Pokemon> findAll() throws SQLException, IOException {
+
+        SqlCommand sqlCommand = new SqlCommand("SELECT * FROM pokemon");
+
+        List<Pokemon> pokemons = new ArrayList<>();
+
+        try {
+            ResultSet res = dbManager.executeQuery(sqlCommand);
+            while(res.next()){
+
+                Pokemon pokemon = new Pokemon();
+                pokemon.setId(res.getInt("id"));
+                pokemon.setNum(res.getString("num"));
+                pokemon.setName(res.getString("name"));
+                pokemon.setHeight(res.getDouble("height"));
+                pokemon.setWeight(res.getDouble("weight"));
+
+                pokemons.add(pokemon);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return pokemons;
 
     }
 

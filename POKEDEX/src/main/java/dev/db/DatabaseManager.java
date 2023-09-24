@@ -1,9 +1,9 @@
 package dev.db;
 
 import dev.models.SqlCommand;
+import org.apache.ibatis.jdbc.ScriptRunner;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.Properties;
 
@@ -14,7 +14,7 @@ public class DatabaseManager {
     private static DatabaseManager instance;
 
 
-    private void connect() throws IOException, SQLException {
+    public void connect() throws SQLException, IOException {
 
         Properties appProps = new Properties();
         appProps.load(new FileInputStream(getClass().getClassLoader().getResource("application.properties").getPath()));
@@ -24,12 +24,17 @@ public class DatabaseManager {
         String name = appProps.getProperty("db.name");
         String url = "jdbc:h2:mem:"+name+";DB_CLOSE_DELAY=-1";
 
-
         connection = DriverManager.getConnection(url, username, password);
+
+        System.out.println("Ejecutando SQL");
+
+        Reader reader = new BufferedReader(new FileReader(getClass().getClassLoader().getResource(appProps.getProperty("db.initScript")).getPath()));
+        ScriptRunner sr = new ScriptRunner(connection);
+        sr.runScript(reader);
 
     }
 
-    private DatabaseManager() throws SQLException, IOException {
+    private DatabaseManager() throws IOException, SQLException {
 
         connect();
 
