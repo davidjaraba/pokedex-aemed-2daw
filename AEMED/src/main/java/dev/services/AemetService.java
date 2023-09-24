@@ -70,6 +70,12 @@ public class AemetService {
                         , Collectors.averagingDouble(AemetRecord::getMaxTemp)));
     }
 
+    public Map<ProvinceDateGroup, Double> getAvgPrecipitationGroupedByProvinceDay() throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        return records.stream()
+                .collect(Collectors.groupingBy(record -> new ProvinceDateGroup(record.getProvince(), record.getDate())
+                        , Collectors.averagingDouble(AemetRecord::getPrecipitation)));
+    }
     public record ProvinceDateGroup(String province, LocalDate date) {
         @Override
         public String toString() {
