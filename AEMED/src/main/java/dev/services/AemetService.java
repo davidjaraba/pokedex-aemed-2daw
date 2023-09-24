@@ -132,5 +132,18 @@ public class AemetService {
 
     }
 
+    public Map<ProvinceDateGroup, Double> minTempGroupedByDateAndProvince() throws SQLException, IOException {
+
+        List<AemetRecord> records = repository.findAll();
+
+        records.stream().collect(Collectors.groupingBy(r -> new ProvinceDateGroup(r.getProvince(), r.getDate()))).forEach(System.out::println);
+
+
+
+
+
+
+    }
+
 
 }
