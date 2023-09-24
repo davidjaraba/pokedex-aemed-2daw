@@ -4,6 +4,8 @@ import dev.models.Pokemon;
 import dev.controllers.PokemonController;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +59,10 @@ public class Main {
             pokeController.tenFirstPokemons().forEach(System.out::println);
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
