@@ -68,7 +68,6 @@ public class DatabaseManager {
         connect();
         PreparedStatement preparedStatement = prepareStatement(sqlCommand);
         ResultSet resultSet = preparedStatement.executeQuery();
-        close();
         return resultSet;
 
     }
@@ -77,7 +76,6 @@ public class DatabaseManager {
         connect();
         PreparedStatement preparedStatement = prepareStatement(sqlCommand);
         int affectedRows = preparedStatement.executeUpdate();
-        close();
         return affectedRows;
 
     }

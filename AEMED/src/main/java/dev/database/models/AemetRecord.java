@@ -3,6 +3,8 @@ package dev.database.models;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -51,4 +53,26 @@ public class AemetRecord {
                 .date(date)
                 .build();
     }
+
+    public static AemetRecord fromResultSet(ResultSet resultSet) throws SQLException {
+
+        resultSet.next();
+
+        return AemetRecord.builder()
+                .id(UUID.fromString(resultSet.getString("id")))
+                .city(resultSet.getString("city"))
+                .province(resultSet.getString("province"))
+                .maxTemp(resultSet.getDouble("max_temp"))
+                .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
+                .minTemp(resultSet.getDouble("min_temp"))
+                .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
+                .precipitation(resultSet.getDouble("precipitation"))
+                .date(resultSet.getDate("date").toLocalDate())
+                .build();
+
+
+
+    }
+
+
 }

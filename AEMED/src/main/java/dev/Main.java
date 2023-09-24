@@ -15,5 +15,10 @@ public class Main {
         AemetService service = new AemetService(repository);
         AemetController controller = new AemetController(service);
         controller.importCsv();
+
+
+        System.out.println("Temperatura máxima por provincia y día: ");
+        System.out.println(controller.getMaxTempGroupedByProvinceDay());
+
     }
 }
