@@ -10,6 +10,9 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
@@ -44,4 +47,30 @@ public class AemetService {
         }
     }
 
+    public Map<MaxTempGroupedByProvinceDay, Double> getMaxTempGroupedByProvinceDay() throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        Map<MaxTempGroupedByProvinceDay, Optional<AemetRecord>> map =
+                records.stream()
+                        .collect(Collectors.groupingBy(record -> new MaxTempGroupedByProvinceDay(record.getProvince(), record.getDate())
+                                , Collectors.maxBy((a, b) -> (int) (a.getMaxTemp() - b.getMaxTemp()))));
+        return map.entrySet().stream().map(entry -> {
+                    double temp = 0;
+                    if (entry.getValue().isPresent()) {
+                        temp = entry.getValue().get().getMaxTemp();
+                    }
+                    return Map.entry(entry.getKey(), temp);
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+
+    public record MaxTempGroupedByProvinceDay(String province, LocalDate date) {
+        @Override
+        public String toString() {
+            return "[" +
+                    "province='" + province + '\'' +
+                    ", date=" + date +
+                    ']';
+        }
+    }
 }
