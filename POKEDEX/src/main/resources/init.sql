@@ -6,4 +6,3 @@ CREATE TABLE IF NOT EXISTS `pokemon` (
     height DECIMAL(6,2)
 );
 
-SELECT * FROM pokemon;

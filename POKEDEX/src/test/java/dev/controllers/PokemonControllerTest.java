@@ -10,9 +10,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -528,5 +531,39 @@ class PokemonControllerTest {
 
     }
 
+    @Test
+    public void getPokemonByNameTest() throws SQLException, IOException {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName("Charmander");
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setName("Pikachu");
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setName("Squirtle");
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setName("Bulbasaur");
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4));
+        Optional<Pokemon> pokemonByName = pokemonController.getPokemonByName("Pikachu");
+        assertAll(
+                () -> assertTrue(pokemonByName.isPresent()),
+                () -> assertEquals("Pikachu", pokemonByName.get().getName())
+        );
+    }
+
+    @Test
+    public void getPokemonByNameWithNoResultTest() throws SQLException, IOException {
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName("Charmander");
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setName("Pikachu");
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setName("Squirtle");
+        Pokemon pokemon4 = new Pokemon();
+        pokemon4.setName("Bulbasaur");
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3, pokemon4));
+        Optional<Pokemon> pokemonByName = pokemonController.getPokemonByName("Evee");
+        assertAll(
+                () -> assertFalse(pokemonByName.isPresent())
+        );
+    }
 
 }

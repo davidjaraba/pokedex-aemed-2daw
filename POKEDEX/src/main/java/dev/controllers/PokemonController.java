@@ -267,5 +267,9 @@ public class PokemonController {
         return pokemonService.findPokemonByName(name).orElseThrow();
     }
 
+    public Optional<Pokemon> getPokemonByName(String name) throws SQLException, IOException {
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons.filter(pokemon -> pokemon.getName().equals(name)).findFirst();
+    }
 
 }
