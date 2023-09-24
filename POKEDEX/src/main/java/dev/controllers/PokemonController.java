@@ -239,4 +239,9 @@ public class PokemonController {
 
     }
 
+    public List<Pokemon> getPokemonsFromCSV(){
+        return pokemonService.getCSV().orElseThrow();
+    }
+
+
 }

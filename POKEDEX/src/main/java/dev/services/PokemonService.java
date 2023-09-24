@@ -82,6 +82,30 @@ public class PokemonService {
         return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Pokemon.class, pokemonJsonSerializer).create();
     }
 
+    public Optional<List<Pokemon>> getCSV (){
+
+        String dir = getDataDir();
+        String pokemonCsvFile = dir + File.separator + "pokemon.csv";
+        Path filePath = Paths.get(pokemonCsvFile);
+        try {
+            return Optional.of(Files.readAllLines(filePath).stream().map(line -> {
+                String[] fields = line.split(String.valueOf(Pokemon.CSV_SEPARATOR));
+                Pokemon pokemon = new Pokemon();
+                pokemon.setId(Integer.parseInt(fields[0]));
+                pokemon.setNum(fields[1]);
+                pokemon.setName(fields[2]);
+                pokemon.setHeight(Double.parseDouble(fields[3]));
+                pokemon.setWeight(Double.parseDouble(fields[4]));
+                return pokemon;
+            }).toList());
+
+        } catch (Exception e) {
+            System.out.println("Error exportando a csv!");
+            System.out.println("Error: " + e.getMessage());
+        }
+        return Optional.empty();
+    }
+
 
     public Optional<Pokemon> insertPokemon(Pokemon pokemon) {
         try {

@@ -57,6 +57,9 @@ public class Main {
             pokeController.getPokemonsByType("Fire").forEach(System.out::println);
             System.out.println("10 primeros");
             pokeController.tenFirstPokemons().forEach(System.out::println);
+            System.out.println("Pokemons almacenados en el CSV");
+            pokeController.getPokemonsFromCSV().forEach(System.out::println);
+
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         } catch (SQLException e) {
