@@ -41,4 +41,14 @@ public class AemetController {
         }
     }
 
+    public Map<AemetService.ProvinceDateGroup, Double> getAvgPrecipitationGroupedByProvinceDay() {
+        try {
+            return service.getAvgPrecipitationGroupedByProvinceDay();
+        } catch (Exception e) {
+            System.err.println("Error al obtener los datos");
+            e.printStackTrace();
+            return Map.of();
+        }
+    }
+
 }

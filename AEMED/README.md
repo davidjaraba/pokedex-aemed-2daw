@@ -19,6 +19,6 @@
 -[x] Crear un CRUD completo para mediciones en una base de datos en fichero tipo H2 o SQLite. Los datos de conexión
  deben estar encapsulados en un manejador y leídos de un fichero de propiedades o de entorno.
 -[x] 2 - Máxima temperatura agrupado por provincias y día.
--[ ] 4 - Medía de temperatura agrupado por provincias y día.
--[ ] 6 - Precipitación media por provincias y día.
+-[x] 4 - Medía de temperatura agrupado por provincias y día.
+-[x] 6 - Precipitación media por provincias y día.
 -[ ] 9 - Exportar los datos de una provincia dada (por ejemplo Madrid) a un fichero json.
