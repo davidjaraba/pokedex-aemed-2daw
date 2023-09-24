@@ -47,11 +47,11 @@ public class AemetService {
         }
     }
 
-    public Map<MaxTempGroupedByProvinceDay, Double> getMaxTempGroupedByProvinceDay() throws SQLException, IOException {
+    public Map<ProvinceDateGroup, Double> getMaxTempGroupedByProvinceDay() throws SQLException, IOException {
         List<AemetRecord> records = repository.findAll();
-        Map<MaxTempGroupedByProvinceDay, Optional<AemetRecord>> map =
+        Map<ProvinceDateGroup, Optional<AemetRecord>> map =
                 records.stream()
-                        .collect(Collectors.groupingBy(record -> new MaxTempGroupedByProvinceDay(record.getProvince(), record.getDate())
+                        .collect(Collectors.groupingBy(record -> new ProvinceDateGroup(record.getProvince(), record.getDate())
                                 , Collectors.maxBy((a, b) -> (int) (a.getMaxTemp() - b.getMaxTemp()))));
         return map.entrySet().stream().map(entry -> {
                     double temp = 0;
@@ -63,8 +63,14 @@ public class AemetService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    public Map<ProvinceDateGroup, Double> getAvgTempGroupedByProvinceDay() throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        return records.stream()
+                .collect(Collectors.groupingBy(record -> new ProvinceDateGroup(record.getProvince(), record.getDate())
+                        , Collectors.averagingDouble(AemetRecord::getMaxTemp)));
+    }
 
-    public record MaxTempGroupedByProvinceDay(String province, LocalDate date) {
+    public record ProvinceDateGroup(String province, LocalDate date) {
         @Override
         public String toString() {
             return "[" +

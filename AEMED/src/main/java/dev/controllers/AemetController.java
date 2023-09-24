@@ -21,7 +21,7 @@ public class AemetController {
         }
     }
 
-    public Map<AemetService.MaxTempGroupedByProvinceDay, Double> getMaxTempGroupedByProvinceDay() {
+    public Map<AemetService.ProvinceDateGroup, Double> getMaxTempGroupedByProvinceDay() {
         try {
             return service.getMaxTempGroupedByProvinceDay();
         } catch (Exception e) {
@@ -30,4 +30,15 @@ public class AemetController {
             return Map.of();
         }
     }
+
+    public Map<AemetService.ProvinceDateGroup, Double> getAvgTempGroupedByProvinceDay() {
+        try {
+            return service.getAvgTempGroupedByProvinceDay();
+        } catch (Exception e) {
+            System.err.println("Error al obtener los datos");
+            e.printStackTrace();
+            return Map.of();
+        }
+    }
+
 }
