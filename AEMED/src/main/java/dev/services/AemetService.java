@@ -1,15 +1,20 @@
 package dev.services;
 
+import dev.database.DatabaseManager;
 import dev.database.models.AemetRecord;
+import dev.database.models.SqlCommand;
 import dev.repository.AemetRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
@@ -43,5 +48,48 @@ public class AemetService {
             e.printStackTrace();
         }
     }
+
+    public Map<LocalDate, String> getMaxTempByDate() throws SQLException, IOException {
+
+        Map<LocalDate, String> maxTempByDate = new HashMap<>();
+
+        DatabaseManager dbMan = DatabaseManager.getInstance();
+        SqlCommand sqlCGetDates = new SqlCommand("SELECT DISTINCT DATE FROM AEMET");
+        ResultSet resultSet = dbMan.executeQuery(sqlCGetDates);
+
+        while (resultSet.next()) {
+            LocalDate date = resultSet.getDate("DATE").toLocalDate();
+            SqlCommand sqlCGetMaxTemp = new SqlCommand("SELECT * FROM AEMET WHERE DATE = ? AND MAX_TEMP = (SELECT MAX(MAX_TEMP) FROM AEMET WHERE DATE = ?)");
+            sqlCGetMaxTemp.addParam(date);
+            sqlCGetMaxTemp.addParam(date);
+            ResultSet resultSet1 = dbMan.executeQuery(sqlCGetMaxTemp);
+            AemetRecord.fromResultSet(resultSet1).stream().findFirst().map(a -> maxTempByDate.put(a.getDate(), a.getCity()));
+        }
+
+        return maxTempByDate;
+
+    }
+
+    public Map<LocalDate, String> getMinTempByDate() throws SQLException, IOException {
+
+        Map<LocalDate, String> maxTempByDate = new HashMap<>();
+
+        DatabaseManager dbMan = DatabaseManager.getInstance();
+        SqlCommand sqlCGetDates = new SqlCommand("SELECT DISTINCT DATE FROM AEMET");
+        ResultSet resultSet = dbMan.executeQuery(sqlCGetDates);
+
+        while (resultSet.next()) {
+            LocalDate date = resultSet.getDate("DATE").toLocalDate();
+            SqlCommand sqlCGetMaxTemp = new SqlCommand("SELECT * FROM AEMET WHERE DATE = ? AND MIN_TEMP = (SELECT MIN(MIN_TEMP) FROM AEMET WHERE DATE = ?)");
+            sqlCGetMaxTemp.addParam(date);
+            sqlCGetMaxTemp.addParam(date);
+            ResultSet resultSet1 = dbMan.executeQuery(sqlCGetMaxTemp);
+            AemetRecord.fromResultSet(resultSet1).stream().findFirst().map(a -> maxTempByDate.put(a.getDate(), a.getCity()));
+        }
+
+        return maxTempByDate;
+
+    }
+
 
 }

@@ -15,5 +15,18 @@ public class Main {
         AemetService service = new AemetService(repository);
         AemetController controller = new AemetController(service);
         controller.importCsv();
+
+        System.out.println("Donde se dio la temperatur maxima cada dia: ");
+        controller.getMaxTempByDate().forEach((date,city)->{
+            System.out.println(date);
+            System.out.println(city);
+        });
+
+        System.out.println("Donde se dio la temperatur minima cada dia: ");
+        controller.getMinTempByDate().forEach((date,city)->{
+            System.out.println(date);
+            System.out.println(city);
+        });
+
     }
 }
