@@ -15,6 +15,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
@@ -49,6 +52,44 @@ public class AemetService {
         }
     }
 
+    public Map<ProvinceDateGroup, Double> getMaxTempGroupedByProvinceDay() throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        Map<ProvinceDateGroup, Optional<AemetRecord>> map =
+                records.stream()
+                        .collect(Collectors.groupingBy(record -> new ProvinceDateGroup(record.getProvince(), record.getDate())
+                                , Collectors.maxBy((a, b) -> (int) (a.getMaxTemp() - b.getMaxTemp()))));
+        return map.entrySet().stream().map(entry -> {
+                    double temp = 0;
+                    if (entry.getValue().isPresent()) {
+                        temp = entry.getValue().get().getMaxTemp();
+                    }
+                    return Map.entry(entry.getKey(), temp);
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Map<ProvinceDateGroup, Double> getAvgTempGroupedByProvinceDay() throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        return records.stream()
+                .collect(Collectors.groupingBy(record -> new ProvinceDateGroup(record.getProvince(), record.getDate())
+                        , Collectors.averagingDouble(AemetRecord::getMaxTemp)));
+    }
+
+    public Map<ProvinceDateGroup, Double> getAvgPrecipitationGroupedByProvinceDay() throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        return records.stream()
+                .collect(Collectors.groupingBy(record -> new ProvinceDateGroup(record.getProvince(), record.getDate())
+                        , Collectors.averagingDouble(AemetRecord::getPrecipitation)));
+    }
+    public record ProvinceDateGroup(String province, LocalDate date) {
+        @Override
+        public String toString() {
+            return "[" +
+                    "province='" + province + '\'' +
+                    ", date=" + date +
+                    ']';
+        }
+    }
     public Map<LocalDate, String> getMaxTempByDate() throws SQLException, IOException {
 
         Map<LocalDate, String> maxTempByDate = new HashMap<>();

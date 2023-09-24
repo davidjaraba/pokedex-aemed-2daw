@@ -89,6 +89,7 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID> {
         while (resultSet.next()) {
             AemetRecord record = AemetRecord.builder()
                     .id(UUID.fromString(resultSet.getString("id")))
+                    .date(resultSet.getDate("date").toLocalDate())
                     .city(resultSet.getString("city"))
                     .province(resultSet.getString("province"))
                     .maxTemp(resultSet.getDouble("max_temp"))
