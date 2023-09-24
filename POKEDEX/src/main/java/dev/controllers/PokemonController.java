@@ -272,4 +272,9 @@ public class PokemonController {
         return pokemons.filter(pokemon -> pokemon.getName().equals(name)).findFirst();
     }
 
+    public Pokemon getPokemonWithLessEvolutions(){
+        Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
+        return pokemons.min(Comparator.comparingInt(pokemon -> pokemon.getNext_evolution().size())).orElse(null);
+    }
+
 }
