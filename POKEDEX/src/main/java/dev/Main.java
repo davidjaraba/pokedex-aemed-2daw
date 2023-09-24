@@ -16,6 +16,7 @@ public class Main {
         try {
             System.out.println("Hello Pokedex!");
             var pokeController = PokemonController.getInstance();
+            System.out.println("Obtener datos de pikachu: "+pokeController.getPokemonByName("Pikachu"));
             Map<String, List<Pokemon>> agrupadosPorTipo = pokeController.groupedByType();
             System.out.println("Agrupados por tipo: ");
             agrupadosPorTipo.forEach((tipo, list) -> System.out.println(tipo + ": " + list.size()));
@@ -65,7 +66,6 @@ public class Main {
             pokeController.readAllPokemonsFromDB().forEach(System.out::println);
             System.out.println("Obteniendo datos de pikachu");
             System.out.println(pokeController.getPokemonFromDBByName("Pikachu"));
-
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         } catch (SQLException e) {
