@@ -3,13 +3,13 @@ package dev.database.models;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Builder()
@@ -54,23 +54,30 @@ public class AemetRecord {
                 .build();
     }
 
-    public static AemetRecord fromResultSet(ResultSet resultSet) throws SQLException {
+    public static List<AemetRecord> fromResultSet(ResultSet resultSet) throws SQLException {
 
-        resultSet.next();
+        List<AemetRecord> res = new ArrayList<>();
 
-        return AemetRecord.builder()
-                .id(UUID.fromString(resultSet.getString("id")))
-                .city(resultSet.getString("city"))
-                .province(resultSet.getString("province"))
-                .maxTemp(resultSet.getDouble("max_temp"))
-                .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
-                .minTemp(resultSet.getDouble("min_temp"))
-                .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
-                .precipitation(resultSet.getDouble("precipitation"))
-                .date(resultSet.getDate("date").toLocalDate())
-                .build();
+        while(resultSet.next()){
+
+            AemetRecord aemetRecord = AemetRecord.builder()
+                    .id(UUID.fromString(resultSet.getString("id")))
+                    .city(resultSet.getString("city"))
+                    .province(resultSet.getString("province"))
+                    .maxTemp(resultSet.getDouble("max_temp"))
+                    .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
+                    .minTemp(resultSet.getDouble("min_temp"))
+                    .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
+                    .precipitation(resultSet.getDouble("precipitation"))
+                    .date(resultSet.getDate("date").toLocalDate())
+                    .build();
 
 
+            res.add(aemetRecord);
+
+        }
+
+        return res;
 
     }
 
