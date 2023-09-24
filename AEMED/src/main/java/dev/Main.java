@@ -20,5 +20,8 @@ public class Main {
         System.out.println("Temperatura máxima por provincia y día: ");
         System.out.println(controller.getMaxTempGroupedByProvinceDay());
 
+        System.out.println("Temperatura media por provincia y día: ");
+        System.out.println(controller.getAvgTempGroupedByProvinceDay());
+
     }
 }
