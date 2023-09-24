@@ -566,4 +566,29 @@ class PokemonControllerTest {
         );
     }
 
+    @Test
+    public void getPokemonWithLessEvolution(){
+        Pokemon pokemon = new Pokemon();
+        pokemon.setName("Charmander");
+        NextEvolution nextEvolution = new NextEvolution();
+        nextEvolution.setName("Charmeleon");
+        pokemon.setNext_evolution(List.of(nextEvolution));
+
+        Pokemon pokemon2 = new Pokemon();
+        pokemon2.setName("Evee");
+        pokemon2.setNext_evolution(List.of());
+
+        Pokemon pokemon3 = new Pokemon();
+        pokemon3.setName("Charizard");
+        NextEvolution nextEvolution2 = new NextEvolution();
+        nextEvolution2.setName("Vaporeon");
+        NextEvolution nextEvolution3 = new NextEvolution();
+        nextEvolution3.setName("Vaporeon2");
+        pokemon3.setNext_evolution(List.of(nextEvolution2, nextEvolution3));
+
+        Mockito.when(pokemonService.getPokemons()).thenReturn(Arrays.asList(pokemon, pokemon2, pokemon3));
+        Pokemon pokemonWithLessEvolution = pokemonController.getPokemonWithLessEvolutions();
+        assertEquals("Evee", pokemonWithLessEvolution.getName());
+    }
+
 }
