@@ -1,10 +1,15 @@
 package dev.controllers;
 
+import dev.db.DatabaseManager;
 import dev.models.NextEvolution;
 import dev.models.Pokemon;
+import dev.models.SqlCommand;
 import dev.services.PokemonService;
 
+import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -18,9 +23,9 @@ public class PokemonController {
         this.pokemonService = pokemonService;
     }
 
-    public static PokemonController getInstance() throws FileNotFoundException {
+    public static PokemonController getInstance() throws IOException, SQLException {
         if (instance == null) {
-            PokemonService pokemonService = new PokemonService();
+            PokemonService pokemonService = new PokemonService(DatabaseManager.getInstance());
             instance = new PokemonController(pokemonService);
         }
         return instance;
@@ -235,5 +240,32 @@ public class PokemonController {
         return pokemonService.getPokemons().stream().limit(10).map(Pokemon::getName).toList();
 
     }
+
+    public List<Pokemon> getPokemonsFromCSV(){
+        return pokemonService.getCSV().orElseThrow();
+    }
+
+    public List<Pokemon> importCsvToDB() throws SQLException, IOException {
+
+        List<Pokemon> readedPokemons = getPokemonsFromCSV();
+
+        DatabaseManager dbManager = DatabaseManager.getInstance();
+
+        readedPokemons.stream().forEach(pokemonService::insertPokemon);
+
+        return readedPokemons;
+
+    }
+
+    public List<Pokemon> readAllPokemonsFromDB() throws SQLException, IOException {
+
+        return pokemonService.findAll();
+
+    }
+
+    public Pokemon getPokemonFromDBByName(String name) throws SQLException, IOException {
+        return pokemonService.findPokemonByName(name).orElseThrow();
+    }
+
 
 }

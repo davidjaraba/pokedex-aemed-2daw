@@ -16,6 +16,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.5.0")
+    implementation("com.h2database:h2:2.2.224")
+    implementation("org.mybatis:mybatis:3.5.13")
 }
 
 tasks.test {

@@ -4,6 +4,8 @@ import dev.models.Pokemon;
 import dev.controllers.PokemonController;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -55,8 +57,21 @@ public class Main {
             pokeController.getPokemonsByType("Fire").forEach(System.out::println);
             System.out.println("10 primeros");
             pokeController.tenFirstPokemons().forEach(System.out::println);
+            System.out.println("Pokemons almacenados en el CSV");
+            pokeController.getPokemonsFromCSV().forEach(System.out::println);
+            System.out.println("Importando CSV a BD");
+            pokeController.importCsvToDB();
+            System.out.println("Pokemons almacenados en la BD");
+            pokeController.readAllPokemonsFromDB().forEach(System.out::println);
+            System.out.println("Obteniendo datos de pikachu");
+            System.out.println(pokeController.getPokemonFromDBByName("Pikachu"));
+
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
