@@ -41,5 +41,11 @@ public class Main {
         System.out.println("Temperatura mínima por provincia y día: ");
         System.out.println(controller.getMinTempGroupedByDateAndProvince());
 
+        System.out.println("Precipitacion maxima por dias y donde se dio: ");
+        controller.getMaxPrecipitationByDay().forEach((datePrecGr,city)->{
+            System.out.println(datePrecGr);
+            System.out.println("Se dio en -> "+city);
+        });
+
     }
 }

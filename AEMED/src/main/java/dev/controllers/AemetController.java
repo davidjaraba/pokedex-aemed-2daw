@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Map;
 
-import java.util.Map;
-
 public class AemetController {
     private final AemetService service;
 
@@ -67,6 +65,10 @@ public class AemetController {
 
     public Map<AemetService.ProvinceDateGroup, Double> getMinTempGroupedByDateAndProvince() throws SQLException, IOException {
         return service.getMinTempGroupedByDateAndProvince();
+    }
+
+    public Map<AemetService.PrecipitationDateGroup, String> getMaxPrecipitationByDay() throws SQLException, IOException {
+        return service.getMaxPrecipitationByDay();
     }
 
 }

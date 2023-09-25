@@ -89,6 +89,16 @@ public class AemetService {
         }
     }
 
+    public record PrecipitationDateGroup(Double precipitation, LocalDate date) {
+        @Override
+        public String toString() {
+            return "[" +
+                    "precipitation='" + precipitation + '\'' +
+                    ", date=" + date +
+                    ']';
+        }
+    }
+
     public Map<LocalDate, String> getMaxTempByDate() throws SQLException, IOException {
 
         Map<LocalDate, String> maxTempByDate = new HashMap<>();
@@ -144,6 +154,24 @@ public class AemetService {
                     return Map.entry(entry.getKey(), temp);
                 })
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+    }
+
+    public Map<PrecipitationDateGroup, String> getMaxPrecipitationByDay() throws SQLException, IOException {
+
+        List<AemetRecord> records = repository.findAll();
+
+        return records.stream().collect(Collectors.groupingBy(AemetRecord::getDate, Collectors.maxBy((a, b)-> (int)(a.getPrecipitation() - b.getPrecipitation())))).entrySet().stream().map(entry ->{
+            double prec = 0;
+            String city = "";
+            LocalDate date = LocalDate.now();
+            if (entry.getValue().isPresent()){
+                prec = entry.getValue().get().getPrecipitation();
+                city = entry.getValue().get().getCity();
+                date = entry.getValue().get().getDate();
+            }
+            return Map.entry(new PrecipitationDateGroup(prec, date), city);
+        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     }
 
