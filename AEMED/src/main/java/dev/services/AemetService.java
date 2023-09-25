@@ -12,11 +12,8 @@ import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -81,6 +78,7 @@ public class AemetService {
                 .collect(Collectors.groupingBy(record -> new ProvinceDateGroup(record.getProvince(), record.getDate())
                         , Collectors.averagingDouble(AemetRecord::getPrecipitation)));
     }
+
     public record ProvinceDateGroup(String province, LocalDate date) {
         @Override
         public String toString() {
@@ -90,6 +88,7 @@ public class AemetService {
                     ']';
         }
     }
+
     public Map<LocalDate, String> getMaxTempByDate() throws SQLException, IOException {
 
         Map<LocalDate, String> maxTempByDate = new HashMap<>();
@@ -132,16 +131,19 @@ public class AemetService {
 
     }
 
-    public Map<ProvinceDateGroup, Double> minTempGroupedByDateAndProvince() throws SQLException, IOException {
+    public Map<ProvinceDateGroup, Double> getMinTempGroupedByDateAndProvince() throws SQLException, IOException {
 
         List<AemetRecord> records = repository.findAll();
 
-        records.stream().collect(Collectors.groupingBy(r -> new ProvinceDateGroup(r.getProvince(), r.getDate()))).forEach(System.out::println);
-
-
-
-
-
+        return records.stream().collect(Collectors.groupingBy(r -> new ProvinceDateGroup(r.getProvince(), r.getDate()),
+                Collectors.minBy((a, b) -> (int) (a.getMinTemp() - b.getMinTemp())))).entrySet().stream().map(entry -> {
+                    double temp = 0;
+                    if (entry.getValue().isPresent()) {
+                        temp = entry.getValue().get().getMinTemp();
+                    }
+                    return Map.entry(entry.getKey(), temp);
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     }
 

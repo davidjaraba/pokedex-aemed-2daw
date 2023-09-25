@@ -65,4 +65,8 @@ public class AemetController {
         return service.getMinTempByDate();
     }
 
+    public Map<AemetService.ProvinceDateGroup, Double> getMinTempGroupedByDateAndProvince() throws SQLException, IOException {
+        return service.getMinTempGroupedByDateAndProvince();
+    }
+
 }

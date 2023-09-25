@@ -38,5 +38,8 @@ public class Main {
         System.out.println("Precipitación media por provincia y día: ");
         System.out.println(controller.getAvgPrecipitationGroupedByProvinceDay());
 
+        System.out.println("Temperatura mínima por provincia y día: ");
+        System.out.println(controller.getMinTempGroupedByDateAndProvince());
+
     }
 }
