@@ -5,7 +5,7 @@
 -[ ] 1 - ¿Dónde se dio la temperatura máxima y mínima total en cada uno de los días?.
 -[ ] 3 - Mínima temperatura agrupado por provincias y día.
 -[ ] 5 - Precipitación máxima por días y dónde se dio.
--[ ] 7 - Lugares donde ha llovido de noche: 21:00 a 07:00
+-[ ] 7 - Lugares donde ha llovido agrupados por provincia y dia.
 -[ ] 8 - Datos de las provincia de Madrid (debe funcionar para cualquier provincia)
     -[ ]  Por cada día:
     -[ ]  Temperatura máxima, mínima y dónde ha sido.
