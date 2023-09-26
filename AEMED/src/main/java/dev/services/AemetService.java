@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -175,5 +174,12 @@ public class AemetService {
 
     }
 
+    public List<ProvinceDateGroup> getPrecipitationGroupedByProvinceAndDate() throws SQLException, IOException {
+
+        List<AemetRecord> records = repository.findAll();
+
+        return records.stream().filter(pr -> pr.getPrecipitation() != 0).map(r -> new ProvinceDateGroup(r.getProvince(), r.getDate())).toList();
+
+    }
 
 }

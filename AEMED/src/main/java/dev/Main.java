@@ -8,6 +8,7 @@ import dev.services.AemetService;
 import java.io.IOException;
 import java.sql.SQLException;
 
+
 public class Main {
     public static void main(String[] args) throws SQLException, IOException {
         DatabaseManager databaseManager = DatabaseManager.getInstance();
@@ -46,6 +47,9 @@ public class Main {
             System.out.println(datePrecGr);
             System.out.println("Se dio en -> "+city);
         });
+
+        System.out.println("Lugares donde ha llovido agrupados por provincia y dia: ");
+        controller.getPrecipitationGroupedByProvinceAndDate().forEach(System.out::println);
 
     }
 }
