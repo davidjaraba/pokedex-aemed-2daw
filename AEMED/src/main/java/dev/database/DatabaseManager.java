@@ -4,8 +4,6 @@ import dev.database.models.SqlCommand;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Properties;
@@ -34,12 +32,18 @@ public class DatabaseManager {
 
     private DatabaseManager() throws IOException, SQLException {
         Properties appProps = new Properties();
-        appProps.load(new FileInputStream(getClass().getClassLoader().getResource("application.properties").getPath()));
+        appProps.load(ClassLoader.getSystemResourceAsStream("application.properties"));
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException e) {
+        }
         username = appProps.getProperty("db.username");
         password = appProps.getProperty("db.password");
         String filePath = Paths.get(appProps.getProperty("db.filepath")).toAbsolutePath().toString();
         connectionString = ("jdbc:h2:" + filePath).trim();
-        Reader reader = new BufferedReader(new FileReader(getClass().getClassLoader().getResource(appProps.getProperty("db.initScript")).getPath()));
+        String initFileName = appProps.getProperty("db.initScript");
+        InputStream initStream = ClassLoader.getSystemResourceAsStream(initFileName);
+        Reader reader = new BufferedReader(new InputStreamReader(initStream));
         connect();
         ScriptRunner sr = new ScriptRunner(connection);
         sr.runScript(reader);
