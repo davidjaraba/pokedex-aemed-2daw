@@ -53,6 +53,7 @@ public class Main {
 
         System.out.println("Exportando a JSON datos de la provincia Madrid");
         controller.exportToJson("Madrid");
+        System.out.println("Lugar donde más ha llovido: " + controller.getMostRainPlace());
 
     }
 }
