@@ -80,4 +80,8 @@ public class AemetController {
         service.exportToJson(province);
     }
 
+    public String getMostRainPlace() throws SQLException, IOException {
+        return service.getMostRainPlace();
+    }
+
 }

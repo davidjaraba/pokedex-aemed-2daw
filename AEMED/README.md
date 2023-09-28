@@ -21,4 +21,5 @@
 -[x] 2 - Máxima temperatura agrupado por provincias y día.
 -[x] 4 - Medía de temperatura agrupado por provincias y día.
 -[x] 6 - Precipitación media por provincias y día.
--[ ] 9 - Exportar los datos de una provincia dada (por ejemplo Madrid) a un fichero json.
+-[x] 9 - Exportar los datos de una provincia dada (por ejemplo Madrid) a un fichero json.
+- [x] 10 - Lugar donde más ha llovido

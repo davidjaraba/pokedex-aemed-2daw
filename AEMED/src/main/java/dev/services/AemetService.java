@@ -202,4 +202,10 @@ public class AemetService {
         Files.writeString(filePath, json);
     }
 
+    public String getMostRainPlace() throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        Map<String, Double> map = records.stream().collect(Collectors.groupingBy(a -> a.getProvince() + " - " + a.getCity(), Collectors.summingDouble(AemetRecord::getPrecipitation)));
+        return map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+    }
+
 }
