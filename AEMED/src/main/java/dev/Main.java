@@ -51,5 +51,8 @@ public class Main {
         System.out.println("Lugares donde ha llovido agrupados por provincia y dia: ");
         controller.getPrecipitationGroupedByProvinceAndDate().forEach(System.out::println);
 
+        System.out.println("Exportando a JSON datos de la provincia Madrid");
+        controller.exportToJson("Madrid");
+
     }
 }
