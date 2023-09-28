@@ -1,9 +1,13 @@
 package dev.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dev.database.DatabaseManager;
 import dev.database.models.AemetRecord;
 import dev.database.models.SqlCommand;
 import dev.repository.AemetRepository;
+import dev.serializers.LocalDateSerializer;
+import dev.serializers.LocalTimeSerializer;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,9 +15,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.*;
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,7 +41,7 @@ public class AemetService {
                 try {
                     String dateString = file.getFileName().toString().substring(5, 13);
                     final String dateFormat = "yyyyMMdd";
-                    LocalDate date = LocalDate.parse(dateString, ofPattern(dateFormat));
+                    java.time.LocalDate date = java.time.LocalDate.parse(dateString, ofPattern(dateFormat));
                     return Files.lines(file).map(line -> AemetRecord.fromCsv(line, date));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -79,7 +85,7 @@ public class AemetService {
                         , Collectors.averagingDouble(AemetRecord::getPrecipitation)));
     }
 
-    public record ProvinceDateGroup(String province, LocalDate date) {
+    public record ProvinceDateGroup(String province, java.time.LocalDate date) {
         @Override
         public String toString() {
             return "[" +
@@ -89,7 +95,7 @@ public class AemetService {
         }
     }
 
-    public record PrecipitationDateGroup(Double precipitation, LocalDate date) {
+    public record PrecipitationDateGroup(Double precipitation, java.time.LocalDate date) {
         @Override
         public String toString() {
             return "[" +
@@ -99,16 +105,16 @@ public class AemetService {
         }
     }
 
-    public Map<LocalDate, String> getMaxTempByDate() throws SQLException, IOException {
+    public Map<java.time.LocalDate, String> getMaxTempByDate() throws SQLException, IOException {
 
-        Map<LocalDate, String> maxTempByDate = new HashMap<>();
+        Map<java.time.LocalDate, String> maxTempByDate = new HashMap<>();
 
         DatabaseManager dbMan = DatabaseManager.getInstance();
         SqlCommand sqlCGetDates = new SqlCommand("SELECT DISTINCT DATE FROM AEMET");
         ResultSet resultSet = dbMan.executeQuery(sqlCGetDates);
 
         while (resultSet.next()) {
-            LocalDate date = resultSet.getDate("DATE").toLocalDate();
+            java.time.LocalDate date = resultSet.getDate("DATE").toLocalDate();
             SqlCommand sqlCGetMaxTemp = new SqlCommand("SELECT * FROM AEMET WHERE DATE = ? AND MAX_TEMP = (SELECT MAX(MAX_TEMP) FROM AEMET WHERE DATE = ?)");
             sqlCGetMaxTemp.addParam(date);
             sqlCGetMaxTemp.addParam(date);
@@ -120,16 +126,16 @@ public class AemetService {
 
     }
 
-    public Map<LocalDate, String> getMinTempByDate() throws SQLException, IOException {
+    public Map<java.time.LocalDate, String> getMinTempByDate() throws SQLException, IOException {
 
-        Map<LocalDate, String> maxTempByDate = new HashMap<>();
+        Map<java.time.LocalDate, String> maxTempByDate = new HashMap<>();
 
         DatabaseManager dbMan = DatabaseManager.getInstance();
         SqlCommand sqlCGetDates = new SqlCommand("SELECT DISTINCT DATE FROM AEMET");
         ResultSet resultSet = dbMan.executeQuery(sqlCGetDates);
 
         while (resultSet.next()) {
-            LocalDate date = resultSet.getDate("DATE").toLocalDate();
+            java.time.LocalDate date = resultSet.getDate("DATE").toLocalDate();
             SqlCommand sqlCGetMaxTemp = new SqlCommand("SELECT * FROM AEMET WHERE DATE = ? AND MIN_TEMP = (SELECT MIN(MIN_TEMP) FROM AEMET WHERE DATE = ?)");
             sqlCGetMaxTemp.addParam(date);
             sqlCGetMaxTemp.addParam(date);
@@ -146,7 +152,7 @@ public class AemetService {
         List<AemetRecord> records = repository.findAll();
 
         return records.stream().collect(Collectors.groupingBy(r -> new ProvinceDateGroup(r.getProvince(), r.getDate()),
-                Collectors.minBy((a, b) -> (int) (a.getMinTemp() - b.getMinTemp())))).entrySet().stream().map(entry -> {
+                        Collectors.minBy((a, b) -> (int) (a.getMinTemp() - b.getMinTemp())))).entrySet().stream().map(entry -> {
                     double temp = 0;
                     if (entry.getValue().isPresent()) {
                         temp = entry.getValue().get().getMinTemp();
@@ -161,11 +167,11 @@ public class AemetService {
 
         List<AemetRecord> records = repository.findAll();
 
-        return records.stream().collect(Collectors.groupingBy(AemetRecord::getDate, Collectors.maxBy((a, b)-> (int)(a.getPrecipitation() - b.getPrecipitation())))).entrySet().stream().map(entry ->{
+        return records.stream().collect(Collectors.groupingBy(AemetRecord::getDate, Collectors.maxBy((a, b) -> (int) (a.getPrecipitation() - b.getPrecipitation())))).entrySet().stream().map(entry -> {
             double prec = 0;
             String city = "";
-            LocalDate date = LocalDate.now();
-            if (entry.getValue().isPresent()){
+            java.time.LocalDate date = java.time.LocalDate.now();
+            if (entry.getValue().isPresent()) {
                 prec = entry.getValue().get().getPrecipitation();
                 city = entry.getValue().get().getCity();
                 date = entry.getValue().get().getDate();
@@ -181,6 +187,19 @@ public class AemetService {
 
         return records.stream().filter(pr -> pr.getPrecipitation() != 0).map(r -> new ProvinceDateGroup(r.getProvince(), r.getDate())).toList();
 
+    }
+
+    public void exportToJson(String province) throws SQLException, IOException {
+        List<AemetRecord> records = repository.findAll();
+        List<AemetRecord> recordsByProvince = records.stream().filter(r -> r.getProvince().equals(province)).toList();
+        final Path filePath = Paths.get("data", province.toLowerCase() + ".json");
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(java.time.LocalDate.class, new LocalDateSerializer())
+                .registerTypeAdapter(LocalTime.class, new LocalTimeSerializer())
+                .create();
+        String json = gson.toJson(recordsByProvince);
+        Files.writeString(filePath, json);
     }
 
 }

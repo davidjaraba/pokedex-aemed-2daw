@@ -76,4 +76,8 @@ public class AemetController {
         return service.getPrecipitationGroupedByProvinceAndDate();
     }
 
+    public void exportToJson(String province) throws SQLException, IOException {
+        service.exportToJson(province);
+    }
+
 }
