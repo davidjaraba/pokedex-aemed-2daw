@@ -1,5 +1,6 @@
 package dev.controllers;
 
+import dev.models.ProvinceData;
 import dev.services.AemetService;
 
 import java.io.IOException;
@@ -83,5 +84,10 @@ public class AemetController {
     public String getMostRainPlace() throws SQLException, IOException {
         return service.getMostRainPlace();
     }
+
+    public Map<LocalDate, ProvinceData> getDataByDateAtProvince(String province) throws SQLException, IOException {
+        return service.getDataByDateAtProvince(province);
+    }
+
 
 }

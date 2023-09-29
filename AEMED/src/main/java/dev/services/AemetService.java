@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import dev.database.DatabaseManager;
 import dev.database.models.AemetRecord;
 import dev.database.models.SqlCommand;
+import dev.models.ProvinceData;
 import dev.repository.AemetRepository;
 import dev.serializers.LocalDateSerializer;
 import dev.serializers.LocalTimeSerializer;
@@ -15,11 +16,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -206,6 +205,34 @@ public class AemetService {
         List<AemetRecord> records = repository.findAll();
         Map<String, Double> map = records.stream().collect(Collectors.groupingBy(a -> a.getProvince() + " - " + a.getCity(), Collectors.summingDouble(AemetRecord::getPrecipitation)));
         return map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
+    }
+
+    public Map<LocalDate, ProvinceData> getDataByDateAtProvince(String province) throws SQLException, IOException {
+
+        List<AemetRecord> records = repository.findByProvince(province);
+
+
+        return records.stream().collect(Collectors.groupingBy(AemetRecord::getDate)).entrySet().stream().map(
+                (entry)->{
+
+                    ProvinceData.TempCityGroup maxTemp = entry.getValue().stream().max(Comparator.comparingDouble(AemetRecord::getMaxTemp)).stream().findFirst().map(
+                            a -> new ProvinceData.TempCityGroup(a.getMaxTemp(), a.getCity())).get();
+
+                    ProvinceData.TempCityGroup minTemp = entry.getValue().stream().min(Comparator.comparingDouble(AemetRecord::getMinTemp)).stream().findFirst().map(
+                            a -> new ProvinceData.TempCityGroup(a.getMinTemp(), a.getCity())).get();
+
+                    double avgMaxTemp = entry.getValue().stream().map(AemetRecord::getMaxTemp).mapToDouble(Double::doubleValue).average().orElse(0.0);
+
+                    double avgMinTemp = entry.getValue().stream().map(AemetRecord::getMinTemp).mapToDouble(Double::doubleValue).average().orElse(0.0);
+
+                    ProvinceData.PrecipitationCityGroup maxPrecipitation = entry.getValue().stream().max(Comparator.comparingDouble(AemetRecord::getPrecipitation)).stream().findFirst().map(
+                            a -> new ProvinceData.PrecipitationCityGroup(a.getPrecipitation(), a.getCity())).get();
+
+                    double avgPrecipitation = entry.getValue().stream().map(AemetRecord::getPrecipitation).mapToDouble(Double::doubleValue).average().orElse(0.0);
+
+
+                    return Map.entry(entry.getKey(), new ProvinceData(avgMaxTemp, avgMinTemp, maxTemp, minTemp, maxPrecipitation, avgPrecipitation));
+                }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

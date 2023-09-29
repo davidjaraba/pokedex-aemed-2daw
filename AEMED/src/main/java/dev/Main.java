@@ -2,11 +2,13 @@ package dev;
 
 import dev.controllers.AemetController;
 import dev.database.DatabaseManager;
+import dev.models.ProvinceData;
 import dev.repository.AemetRepository;
 import dev.services.AemetService;
-
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Map;
 
 
 public class Main {
@@ -50,6 +52,14 @@ public class Main {
 
         System.out.println("Lugares donde ha llovido agrupados por provincia y dia: ");
         controller.getPrecipitationGroupedByProvinceAndDate().forEach(System.out::println);
+
+        System.out.println("Datos de Madrid: ");
+        Map<LocalDate, ProvinceData> pd = controller.getDataByDateAtProvince("Madrid");
+        pd.forEach((date,provinceData)->{
+            System.out.println(date);
+            System.out.println(provinceData);
+        });
+
 
         System.out.println("Exportando a JSON datos de la provincia Madrid");
         controller.exportToJson("Madrid");

@@ -3,7 +3,6 @@ package dev.repository;
 import dev.database.DatabaseManager;
 import dev.database.models.AemetRecord;
 import dev.database.models.SqlCommand;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class AemetRepository implements ICrudRepository<AemetRecord, UUID> {
+public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, AutoCloseable {
     private final DatabaseManager databaseManager;
 
     public AemetRepository(DatabaseManager dbManager) {
@@ -63,18 +62,19 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID> {
         String query = "SELECT * FROM aemet WHERE id = ?";
         SqlCommand sqlCommand = new SqlCommand(query);
         sqlCommand.addParam(uuid.toString());
-        ResultSet resultSet = databaseManager.executeQuery(sqlCommand);
-        if (resultSet.next()) {
-            return AemetRecord.builder()
-                    .id(UUID.fromString(resultSet.getString("id")))
-                    .city(resultSet.getString("city"))
-                    .province(resultSet.getString("province"))
-                    .maxTemp(resultSet.getDouble("max_temp"))
-                    .minTemp(resultSet.getDouble("min_temp"))
-                    .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
-                    .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
-                    .precipitation(resultSet.getDouble("precipitation"))
-                    .build();
+        try (ResultSet resultSet = databaseManager.executeQuery(sqlCommand)) {
+            if (resultSet.next()) {
+                return AemetRecord.builder()
+                        .id(UUID.fromString(resultSet.getString("id")))
+                        .city(resultSet.getString("city"))
+                        .province(resultSet.getString("province"))
+                        .maxTemp(resultSet.getDouble("max_temp"))
+                        .minTemp(resultSet.getDouble("min_temp"))
+                        .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
+                        .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
+                        .precipitation(resultSet.getDouble("precipitation"))
+                        .build();
+            }
         }
         return null;
     }
@@ -83,22 +83,24 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID> {
     public List<AemetRecord> findAll() throws SQLException, IOException {
         String query = "SELECT * FROM aemet";
         SqlCommand sqlCommand = new SqlCommand(query);
-        ResultSet resultSet = databaseManager.executeQuery(sqlCommand);
-        List<AemetRecord> aemetRecords = new ArrayList<>();
+        List<AemetRecord> aemetRecords;
+        try (ResultSet resultSet = databaseManager.executeQuery(sqlCommand)) {
+            aemetRecords = new ArrayList<>();
 
-        while (resultSet.next()) {
-            AemetRecord record = AemetRecord.builder()
-                    .id(UUID.fromString(resultSet.getString("id")))
-                    .date(resultSet.getDate("date").toLocalDate())
-                    .city(resultSet.getString("city"))
-                    .province(resultSet.getString("province"))
-                    .maxTemp(resultSet.getDouble("max_temp"))
-                    .minTemp(resultSet.getDouble("min_temp"))
-                    .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
-                    .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
-                    .precipitation(resultSet.getDouble("precipitation"))
-                    .build();
-            aemetRecords.add(record);
+            while (resultSet.next()) {
+                AemetRecord record = AemetRecord.builder()
+                        .id(UUID.fromString(resultSet.getString("id")))
+                        .date(resultSet.getDate("date").toLocalDate())
+                        .city(resultSet.getString("city"))
+                        .province(resultSet.getString("province"))
+                        .maxTemp(resultSet.getDouble("max_temp"))
+                        .minTemp(resultSet.getDouble("min_temp"))
+                        .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
+                        .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
+                        .precipitation(resultSet.getDouble("precipitation"))
+                        .build();
+                aemetRecords.add(record);
+            }
         }
         return aemetRecords;
     }
@@ -126,5 +128,35 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID> {
         SqlCommand sqlCommand = new SqlCommand(command);
         sqlCommand.addParam(uuid.toString());
         databaseManager.executeUpdate(sqlCommand);
+    }
+
+    public List<AemetRecord> findByProvince(String province) throws SQLException, IOException{
+        String command = "SELECT * FROM aemet WHERE province = ?";
+        SqlCommand sqlCommand = new SqlCommand(command);
+        sqlCommand.addParam(province);
+        List<AemetRecord> aemetRecords = new ArrayList<>();
+        try (ResultSet resultSet = databaseManager.executeQuery(sqlCommand)) {
+            while (resultSet.next()) {
+                AemetRecord record = AemetRecord.builder()
+                        .id(UUID.fromString(resultSet.getString("id")))
+                        .date(resultSet.getDate("date").toLocalDate())
+                        .city(resultSet.getString("city"))
+                        .province(resultSet.getString("province"))
+                        .maxTemp(resultSet.getDouble("max_temp"))
+                        .minTemp(resultSet.getDouble("min_temp"))
+                        .minTempTime(resultSet.getTime("min_temp_time").toLocalTime())
+                        .maxTempTime(resultSet.getTime("max_temp_time").toLocalTime())
+                        .precipitation(resultSet.getDouble("precipitation"))
+                        .build();
+                aemetRecords.add(record);
+            }
+        }
+        return aemetRecords;
+    }
+
+
+    @Override
+    public void close() throws Exception {
+        DatabaseManager.getInstance().close();
     }
 }

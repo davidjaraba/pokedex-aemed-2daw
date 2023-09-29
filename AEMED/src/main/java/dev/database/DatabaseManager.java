@@ -22,7 +22,7 @@ public class DatabaseManager {
         connection = DriverManager.getConnection(connectionString, username, password);
     }
 
-    private void close() {
+    public void close() {
         try {
             connection.close();
         } catch (SQLException e) {
