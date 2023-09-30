@@ -17,7 +17,7 @@ public class DatabaseManager {
     public void connect() throws SQLException, IOException {
 
         Properties appProps = new Properties();
-        appProps.load(new FileInputStream(getClass().getClassLoader().getResource("application.properties").getPath()));
+        appProps.load(ClassLoader.getSystemResourceAsStream("application.properties"));
 
         String username = appProps.getProperty("db.username");
         String password = appProps.getProperty("db.password");
@@ -28,7 +28,8 @@ public class DatabaseManager {
 
         System.out.println("Ejecutando SQL");
 
-        Reader reader = new BufferedReader(new FileReader(getClass().getClassLoader().getResource(appProps.getProperty("db.initScript")).getPath()));
+        InputStream initStream = ClassLoader.getSystemResourceAsStream(appProps.getProperty("db.initScript"));
+        Reader reader = new BufferedReader(new InputStreamReader(initStream));
         ScriptRunner sr = new ScriptRunner(connection);
         sr.runScript(reader);
 

@@ -10,10 +10,7 @@ import dev.models.Pokemon;
 import dev.models.SqlCommand;
 import dev.utils.PokemonUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -50,7 +47,7 @@ public class PokemonService {
             throw new FileNotFoundException("File not found: " + pokemonJsonFile);
         }
         Gson gson = getGson();
-        try (Reader reader = Files.newBufferedReader(filePath)) {
+        try (Reader reader = new InputStreamReader(new FileInputStream(pokemonJsonFile))) {
             this.pokedex = gson.fromJson(reader, new TypeToken<Pokedex>() {
             }.getType());
             System.out.println("Pokedex loaded! There are: " + getPokemons().size());

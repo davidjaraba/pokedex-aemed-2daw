@@ -23,3 +23,17 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+
+tasks.compileJava {
+    options.release = 17
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "dev.Main"
+    }
+
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+
+}
