@@ -19,10 +19,20 @@ public class ProvinceData {
     private PrecipitationCityGroup maxPrecipitation;
     private double averagePrecipitation;
 
+    /**
+     * Agrupar la temperatura y la ciudad
+     * @param temp
+     * @param city
+     */
     public record TempCityGroup(double temp, String city){
 
     }
 
+    /**
+     * Agrugar la precipitacion y la ciudad
+     * @param prec
+     * @param city
+     */
     public record PrecipitationCityGroup(double prec, String city){
 
     }

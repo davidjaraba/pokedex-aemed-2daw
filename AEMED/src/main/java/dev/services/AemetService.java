@@ -24,6 +24,12 @@ import java.util.stream.Stream;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 
+
+/**
+ * Clase que agregar los metodos usados por el resto clases para obtener ciertos datos
+ * @author David Jaraba y Jorge Benavente
+ * @version 1.0
+ */
 public class AemetService {
 
     private final AemetRepository repository;
@@ -32,6 +38,10 @@ public class AemetService {
         this.repository = repository;
     }
 
+    /**
+     * Funcion para importar los datos de los csv a la BD
+     * @throws IOException
+     */
     public void importCsv() throws IOException {
         Path dataPath = Paths.get("data").toAbsolutePath();
         try (Stream<Path> fileStream = Files.list(dataPath)) {
@@ -54,6 +64,12 @@ public class AemetService {
         }
     }
 
+    /**
+     * Funcion para obtener la temperatura maxima de cada provincia agrupado por dia y provincia
+     * @return Map<ProvinceDateGroup, Double>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<ProvinceDateGroup, Double> getMaxTempGroupedByProvinceDay() throws SQLException, IOException {
         List<AemetRecord> records = repository.findAll();
         Map<ProvinceDateGroup, Optional<AemetRecord>> map =
@@ -70,6 +86,12 @@ public class AemetService {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
+    /**
+     * Funcion para obtener la media de temperatura agrupada por dia y provincia
+     * @return Map<ProvinceDateGroup, Double>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<ProvinceDateGroup, Double> getAvgTempGroupedByProvinceDay() throws SQLException, IOException {
         List<AemetRecord> records = repository.findAll();
         return records.stream()
@@ -77,6 +99,12 @@ public class AemetService {
                         , Collectors.averagingDouble(AemetRecord::getMaxTemp)));
     }
 
+    /**
+     * Funcion para obtener la media de precipitaciones agrupada por dia y provincia
+     * @return Map<ProvinceDateGroup, Double>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<ProvinceDateGroup, Double> getAvgPrecipitationGroupedByProvinceDay() throws SQLException, IOException {
         List<AemetRecord> records = repository.findAll();
         return records.stream()
@@ -84,6 +112,11 @@ public class AemetService {
                         , Collectors.averagingDouble(AemetRecord::getPrecipitation)));
     }
 
+    /**
+     * Record para agrupar provincia y fecha
+     * @param province
+     * @param date
+     */
     public record ProvinceDateGroup(String province, java.time.LocalDate date) {
         @Override
         public String toString() {
@@ -94,6 +127,11 @@ public class AemetService {
         }
     }
 
+    /**
+     * Record para agrupar precipitacion y fecha
+     * @param precipitation
+     * @param date
+     */
     public record PrecipitationDateGroup(Double precipitation, java.time.LocalDate date) {
         @Override
         public String toString() {
@@ -104,6 +142,12 @@ public class AemetService {
         }
     }
 
+    /**
+     * Funcion para obtener la temperatura maxima por cada dia
+     * @return Map<java.time.LocalDate, String>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<java.time.LocalDate, String> getMaxTempByDate() throws SQLException, IOException {
 
         Map<java.time.LocalDate, String> maxTempByDate = new HashMap<>();
@@ -125,6 +169,12 @@ public class AemetService {
 
     }
 
+    /**
+     * Funcion para obtener la temperatura minima por cada dia
+     * @return Map<java.time.LocalDate, String>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<java.time.LocalDate, String> getMinTempByDate() throws SQLException, IOException {
 
         Map<java.time.LocalDate, String> maxTempByDate = new HashMap<>();
@@ -146,6 +196,12 @@ public class AemetService {
 
     }
 
+    /**
+     * Funcion para obtener la temperatura minima agrupada por dia y provincia
+     * @return Map<ProvinceDateGroup, Double>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<ProvinceDateGroup, Double> getMinTempGroupedByDateAndProvince() throws SQLException, IOException {
 
         List<AemetRecord> records = repository.findAll();
@@ -162,6 +218,12 @@ public class AemetService {
 
     }
 
+    /**
+     * Funcion para obtener la precipitacion maxima agrupada por precipitacion y dia
+     * @return Map<PrecipitationDateGroup, String>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<PrecipitationDateGroup, String> getMaxPrecipitationByDay() throws SQLException, IOException {
 
         List<AemetRecord> records = repository.findAll();
@@ -180,6 +242,12 @@ public class AemetService {
 
     }
 
+    /**
+     * Funcion para obtener donde ha llovido agrupado por provincia y dia
+     * @return List<ProvinceDateGroup>
+     * @throws SQLException
+     * @throws IOException
+     */
     public List<ProvinceDateGroup> getPrecipitationGroupedByProvinceAndDate() throws SQLException, IOException {
 
         List<AemetRecord> records = repository.findAll();
@@ -188,6 +256,12 @@ public class AemetService {
 
     }
 
+    /**
+     * Funcion para exportar los datos de una provincia concreta a json
+     * @param province
+     * @throws SQLException
+     * @throws IOException
+     */
     public void exportToJson(String province) throws SQLException, IOException {
         List<AemetRecord> records = repository.findAll();
         List<AemetRecord> recordsByProvince = records.stream().filter(r -> r.getProvince().equals(province)).toList();
@@ -201,12 +275,25 @@ public class AemetService {
         Files.writeString(filePath, json);
     }
 
+    /**
+     * Funcion para obtener donde ha sido el lugar en que mas ha llovido
+     * @return String
+     * @throws SQLException
+     * @throws IOException
+     */
     public String getMostRainPlace() throws SQLException, IOException {
         List<AemetRecord> records = repository.findAll();
         Map<String, Double> map = records.stream().collect(Collectors.groupingBy(a -> a.getProvince() + " - " + a.getCity(), Collectors.summingDouble(AemetRecord::getPrecipitation)));
         return map.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
     }
 
+    /**
+     * Funcion para obtener datos expecificos y medias de una provincia dada
+     * @param province
+     * @return Map<LocalDate, ProvinceData>
+     * @throws SQLException
+     * @throws IOException
+     */
     public Map<LocalDate, ProvinceData> getDataByDateAtProvince(String province) throws SQLException, IOException {
 
         List<AemetRecord> records = repository.findByProvince(province);

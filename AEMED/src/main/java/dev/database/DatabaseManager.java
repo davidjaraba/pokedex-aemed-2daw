@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.Properties;
 
+/**
+ * Clase que establece la conexion con la BD y ejecuta consultas
+ */
 public class DatabaseManager {
 
     private Connection connection;
@@ -18,10 +21,18 @@ public class DatabaseManager {
     private final String password;
     private final String connectionString;
 
+    /**
+     * Funcion para conectar con la BD
+     * @throws SQLException
+     * @throws IOException
+     */
     private void connect() throws SQLException, IOException {
         connection = DriverManager.getConnection(connectionString, username, password);
     }
 
+    /**
+     * Funcion para cerrar la conexion
+     */
     public void close() {
         try {
             connection.close();
@@ -50,6 +61,12 @@ public class DatabaseManager {
         close();
     }
 
+    /**
+     * Funcion para obtener la instancia unica
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public static DatabaseManager getInstance() throws SQLException, IOException {
         if (instance == null) {
             instance = new DatabaseManager();
@@ -57,6 +74,12 @@ public class DatabaseManager {
         return instance;
     }
 
+    /**
+     * Funcion que recibe un SQLCommand y lo convierte a un PreparedStatement
+     * @param sqlCommand
+     * @return
+     * @throws SQLException
+     */
     private PreparedStatement prepareStatement(SqlCommand sqlCommand) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(sqlCommand.getCommand());
@@ -68,6 +91,13 @@ public class DatabaseManager {
         return preparedStatement;
     }
 
+    /**
+     * Funcion para ejecutar una query a la BD
+     * @param sqlCommand
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public ResultSet executeQuery(SqlCommand sqlCommand) throws SQLException, IOException {
         connect();
         PreparedStatement preparedStatement = prepareStatement(sqlCommand);
@@ -76,6 +106,13 @@ public class DatabaseManager {
 
     }
 
+    /**
+     * Funcion para ejecutar un update a la BD
+     * @param sqlCommand
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public int executeUpdate(SqlCommand sqlCommand) throws SQLException, IOException {
         connect();
         PreparedStatement preparedStatement = prepareStatement(sqlCommand);
