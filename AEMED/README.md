@@ -44,10 +44,31 @@ métodos:
 - `update`: Recibe un objeto de tipo [AemetRecord](src/main/java/dev/database/models/AemetRecord.java), lo actualiza
   en la base de datos y lo devuelve con las propiedades actualizadas. Este método es una implementación de la
   interfaz [ICrudRepository](src/main/java/dev/repository/ICrudRepository.java).
-- `deleteById`: Recibe un objeto de tipo [AemetRecord](src/main/java/dev/database/models/AemetRecord.java) y lo elimina de
+- `deleteById`: Recibe un objeto de tipo [AemetRecord](src/main/java/dev/database/models/AemetRecord.java) y lo elimina
+  de
   la base de datos. Este método es una implementación de la
   interfaz [ICrudRepository](src/main/java/dev/repository/ICrudRepository.java).
 
 ![Métodos save y saveAll de la clase AemetRepository](images/aemet-repository-1.png)
 ![Métodos findById y findAll de la clase AemetRepository](images/aemet-repository-2.png)
 ![Métodos update y deleteById de la clase AemetRepository](images/aemet-repository-3.png)
+
+En la clase [AemetService](src/main/java/dev/services/AemetService.java) tenemos los métodos que se encargan de obtener
+los datos proporcionados por la clase [AemetRepository](src/main/java/dev/repository/AemetRepository.java) y de
+transformarlos para pasarlos a la capa de presentación. Como ejemplo podemos observar el
+método `AemetService.getMaxPrecipitationByDay` que obtiene los
+datos del repositorio y se encarga de transformarlos para devolverlos en el formato requerido por la capa de
+presentación.
+![Método getMaxPrecipitationByDay de la clase AemetService](images/aemet-service.png)
+
+Por último, en la clase [AemetController](src/main/java/dev/controllers/AemetController.java) tenemos los métodos que
+se encargan de recibir los datos transformados por la capa de lógica de negocio y de mostrarlos por pantalla.
+
+Como clases auxiliares, tenemos [LocalDateSerializer](src/main/java/dev/serializers/LocalDateSerializer.java)
+y [LocalTimeSerializer](src/main/java/dev/serializers/LocalTimeSerializer.java) que se encargan de serializar
+los objetos de tipo `LocalDate` y `LocalDateTime` respectivamente para que Gson sepa cómo serializarlos a JSON.
+
+## Ejecución
+Si todos los requisitos mencionados en [Requisitos](#requisitos) se cumplen, el proyecto no debería dar ningún problema y la salida por consola debería ser la siguiente:
+
+![Salida por consola](images/salida.png)
