@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementa los metodos de la interfaz CRUD
+ */
 public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, AutoCloseable {
     private final DatabaseManager databaseManager;
 
@@ -17,6 +20,13 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         databaseManager = dbManager;
     }
 
+    /**
+     * Funcion para guardar un objeto en la base de datos
+     * @param aemetRecord
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     @Override
     public AemetRecord save(AemetRecord aemetRecord) throws SQLException, IOException {
         String command = "INSERT INTO aemet (id, date, city, province, max_temp, min_temp, min_temp_time, max_temp_time, precipitation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -34,6 +44,12 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         return aemetRecord;
     }
 
+    /**
+     * Funcion para guardar una lista de objetos en la base de datos
+     * @param records
+     * @throws SQLException
+     * @throws IOException
+     */
     public void saveAll(List<AemetRecord> records) throws SQLException, IOException {
         StringBuilder sb = new StringBuilder();
         String values = "(?,?,?,?,?,?,?,?,?),";
@@ -57,6 +73,13 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         databaseManager.executeUpdate(sqlCommand);
     }
 
+    /**
+     * Funcion para buscar un objeto por su id
+     * @param uuid
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     @Override
     public AemetRecord findById(UUID uuid) throws SQLException, IOException {
         String query = "SELECT * FROM aemet WHERE id = ?";
@@ -79,6 +102,12 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         return null;
     }
 
+    /**
+     * Funcion para devolver una lista con todos los objetos de la base de datos
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     @Override
     public List<AemetRecord> findAll() throws SQLException, IOException {
         String query = "SELECT * FROM aemet";
@@ -105,6 +134,13 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         return aemetRecords;
     }
 
+    /**
+     * Funcion para actualizar un objeto de la base de datos
+     * @param aemetRecord
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     @Override
     public AemetRecord update(AemetRecord aemetRecord) throws SQLException, IOException {
         String command = "UPDATE aemet SET date = ?, SET city = ?, province = ?, max_temp = ?, min_temp = ?, min_temp_time = ?, max_temp_time = ?, precipitation = ? WHERE id = ?";
@@ -122,6 +158,12 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         return aemetRecord;
     }
 
+    /**
+     * Funcion para borrar un objeto de la base de datos por su id
+     * @param uuid
+     * @throws SQLException
+     * @throws IOException
+     */
     @Override
     public void deleteById(UUID uuid) throws SQLException, IOException {
         String command = "DELETE FROM aemet WHERE id = ?";
@@ -130,6 +172,13 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         databaseManager.executeUpdate(sqlCommand);
     }
 
+    /**
+     * Funcion para buscar un objeto por la provincia
+     * @param province
+     * @return
+     * @throws SQLException
+     * @throws IOException
+     */
     public List<AemetRecord> findByProvince(String province) throws SQLException, IOException{
         String command = "SELECT * FROM aemet WHERE province = ?";
         SqlCommand sqlCommand = new SqlCommand(command);
@@ -154,7 +203,10 @@ public class AemetRepository implements ICrudRepository<AemetRecord, UUID>, Auto
         return aemetRecords;
     }
 
-
+    /**
+     * Funcion para cerrar la conexion con la base de datos
+     * @throws Exception
+     */
     @Override
     public void close() throws Exception {
         DatabaseManager.getInstance().close();

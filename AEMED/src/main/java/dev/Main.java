@@ -11,6 +11,10 @@ import java.time.LocalDate;
 import java.util.Map;
 
 
+/**
+ * @author David Jaraba y Jorge Benavente
+ * @version 1.0
+ */
 public class Main {
     public static void main(String[] args) throws SQLException, IOException {
         DatabaseManager databaseManager = DatabaseManager.getInstance();

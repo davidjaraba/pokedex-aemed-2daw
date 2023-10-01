@@ -24,6 +24,12 @@ public class AemetRecord {
     private final double precipitation;
     private final LocalDate date;
 
+    /**
+     * Funcion para crear un objeto AemetRecord a partir de un String
+     * @param csv
+     * @param date
+     * @return AemetRecord
+     */
     public static AemetRecord fromCsv(String csv, LocalDate date) {
         List<String> values = Arrays.stream(csv.split(";")).map(String::trim).toList();
         String city = values.get(0);
@@ -54,6 +60,12 @@ public class AemetRecord {
                 .build();
     }
 
+    /**
+     * Funcion para convertir un ResultSet a una lista de AemetRecords
+     * @param resultSet
+     * @return
+     * @throws SQLException
+     */
     public static List<AemetRecord> fromResultSet(ResultSet resultSet) throws SQLException {
 
         List<AemetRecord> res = new ArrayList<>();
