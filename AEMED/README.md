@@ -1,25 +1,19 @@
-# Tareas
+# PRÁCTICA 01 - AEMET
 
-## David
+## Autores
 
--[ ] 1 - ¿Dónde se dio la temperatura máxima y mínima total en cada uno de los días?.
--[ ] 3 - Mínima temperatura agrupado por provincias y día.
--[ ] 5 - Precipitación máxima por días y dónde se dio.
--[ ] 7 - Lugares donde ha llovido agrupados por provincia y dia.
--[ ] 8 - Datos de las provincia de Madrid (debe funcionar para cualquier provincia)
-    -[ ]  Por cada día:
-    -[ ]  Temperatura máxima, mínima y dónde ha sido.
-    -[ ]  Temperatura media máxima.
-    -[ ]  Temperatura media mínima.
-    -[ ]  Precipitación máxima y dónde ha sido.
-    -[ ]  Precipitación media.
+- David Jaraba Pascual
+- Jorge Benavente Liétor
 
-## Jorge
+## Requisitos
 
--[x] Crear un CRUD completo para mediciones en una base de datos en fichero tipo H2 o SQLite. Los datos de conexión
- deben estar encapsulados en un manejador y leídos de un fichero de propiedades o de entorno.
--[x] 2 - Máxima temperatura agrupado por provincias y día.
--[x] 4 - Medía de temperatura agrupado por provincias y día.
--[x] 6 - Precipitación media por provincias y día.
--[x] 9 - Exportar los datos de una provincia dada (por ejemplo Madrid) a un fichero json.
-- [x] 10 - Lugar donde más ha llovido
+- Java 17 o superior
+- Gradle (si quieres compilar el proyecto)
+- Ficheros de datos de AEMET en la carpeta `data` con formato de nombre `AemetYYYYmmDD.csv`
+
+## Arquitectura seguida en el código
+
+En este proyecto se ha seguido una arquitectura de capas con el objetivo de separar las distintas responsabilidades de
+la aplicación. En concreto, se ha seguido una arquitectura de 3 capas: capa de datos (en los
+paquete `dev.database`, `dev.repository` y `dev.database.models`),
+capa de lógica de negocio (en el paquete `dev.services`) y capa de presentación (`dev.controllers`).
