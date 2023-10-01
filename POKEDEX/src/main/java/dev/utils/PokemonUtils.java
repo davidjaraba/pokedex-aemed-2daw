@@ -11,10 +11,18 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase de utilidades para los Pokemon
+ */
 public class PokemonUtils {
     private PokemonUtils() {
     }
 
+    /**
+     * Obtiene un deserializador de JSON para un Pokemon que se encarga de pasar la altura y el peso a double
+     *
+     * @return Deserializador de JSON para un Pokemon
+     */
     public static JsonDeserializer<Pokemon> getJsonDeserializer() {
         return  new JsonDeserializer<Pokemon>() {
             @Override
@@ -67,7 +75,7 @@ public class PokemonUtils {
                     }.getType());
                 }
                 pokemon.setNext_evolution(nextEvolutions);
-                List<PrevEvolution> prevEvolutions =new ArrayList<>();
+                List<PrevEvolution> prevEvolutions = new ArrayList<>();
                 JsonElement prevEvolution = jsonObject.get("prev_evolution");
                 if (prevEvolution != null) {
                     prevEvolutions = context.deserialize(prevEvolution, new TypeToken<List<PrevEvolution>>() {
