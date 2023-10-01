@@ -23,6 +23,13 @@ public class PokemonController {
         this.pokemonService = pokemonService;
     }
 
+    /**
+     * Método que devuelve una instancia de la clase PokemonController
+     *
+     * @return La instancia de la clase
+     * @throws IOException  Si hay un error al leer el archivo de propiedades
+     * @throws SQLException Si hay un error en la conexión
+     */
     public static PokemonController getInstance() throws IOException, SQLException {
         if (instance == null) {
             PokemonService pokemonService = new PokemonService(DatabaseManager.getInstance());
@@ -32,6 +39,11 @@ public class PokemonController {
     }
 
 
+    /**
+     * Método que se encarga de obtener todos los pokémons agrupados por tipo
+     *
+     * @return Un mapa con los pokémons agrupados por tipo
+     */
     public Map<String, List<Pokemon>> groupedByType() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         Map<String, List<Pokemon>> map = new HashMap<>();
@@ -48,6 +60,11 @@ public class PokemonController {
         });
     }
 
+    /**
+     * Método que se encarga de obtener la debilidad más común entre todos los pokémons
+     *
+     * @return La debilidad más común entre todos los pokémons
+     */
     public String getMostCommonWeakness() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         Optional<Map.Entry<String, Long>> entry = pokemons
@@ -61,6 +78,11 @@ public class PokemonController {
 
     }
 
+    /**
+     * Método que se encarga de obtener los nombres de los últimos 5 pokémons agregados
+     *
+     * @return Los nombres de los últimos 5 pokémons agregados
+     */
     public List<String> getLast5PokemonNames() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -70,6 +92,12 @@ public class PokemonController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Método que se encarga de obtener la siguiente evolución de un pokémon
+     *
+     * @param name El nombre del pokémon del que se quiere obtener la siguiente evolución
+     * @return La siguiente evolución del pokémon
+     */
     public Pokemon getNextEvolution(String name) {
         List<Pokemon> pokemonList = pokemonService.getPokemons();
         Stream<Pokemon> pokemons = pokemonList.stream();
@@ -91,6 +119,11 @@ public class PokemonController {
 
     }
 
+    /**
+     * Método que se encarga de obtener los pokémons de tipo eléctrico o agua
+     *
+     * @return Los pokémons de tipo eléctrico o agua
+     */
     public List<Pokemon> getWaterOrElectricPokemons() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -98,6 +131,11 @@ public class PokemonController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Método que se encarga de obtener el pokémon con más debilidades
+     *
+     * @return El pokémon con más debilidades
+     */
     public Pokemon getMostWeaknessPokemon() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -105,6 +143,11 @@ public class PokemonController {
                 .orElse(null);
     }
 
+    /**
+     * Método que se encarga de obtener los pokémons que no tienen evolución de tipo fuego
+     *
+     * @return Los pokémons que no tienen evolución de tipo fuego
+     */
     public List<Pokemon> getPokemonWithNoFireEvolution() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -118,6 +161,11 @@ public class PokemonController {
                 .toList();
     }
 
+    /**
+     * Método que se encarga de obtener el pokémon más alto
+     *
+     * @return El pokémon más alto
+     */
     public Pokemon getTallestPokemon() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -125,6 +173,11 @@ public class PokemonController {
                 .orElse(null);
     }
 
+    /**
+     * Método que se encarga de obtener la media de peso de todos los pokémons
+     *
+     * @return La media de peso de todos los pokémons
+     */
     public double getAverageWeight() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -133,6 +186,11 @@ public class PokemonController {
                 .orElse(0);
     }
 
+    /**
+     * Método que se encarga de obtener la media de evoluciones de todos los pokémons
+     *
+     * @return La media de evoluciones de todos los pokémons
+     */
     public double getAverageEvolutionCount() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -146,6 +204,11 @@ public class PokemonController {
                 .orElse(0);
     }
 
+    /**
+     * Método que se encarga de obtener la media de debilidades de todos los pokémons
+     *
+     * @return La media de debilidades de todos los pokémons
+     */
     public double getAverageWeaknessCount() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons
@@ -154,24 +217,35 @@ public class PokemonController {
                 .orElse(0);
     }
 
-    public Map<Integer, List<Pokemon>> groupedByEvolutions (){
+    /**
+     * Método que se encarga de obtener los pokémons agrupados por el número de evoluciones que tienen
+     *
+     * @return Los pokémons agrupados por el número de evoluciones que tienen
+     */
+    public Map<Integer, List<Pokemon>> groupedByEvolutions() {
 
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         Map<Integer, List<Pokemon>> groupedPokemons = new HashMap<>();
 
-        groupedPokemons = pokemons.collect(Collectors.groupingBy(e-> e.getNext_evolution().size()));
+        groupedPokemons = pokemons.collect(Collectors.groupingBy(e -> e.getNext_evolution().size()));
 
         return groupedPokemons;
 
     }
 
-
-
+    /**
+     * Método que se encarga de exportar los pokémons a un fichero CSV
+     */
     public void exportToCSV() {
         pokemonService.exportToCSV();
     }
 
-    public Map<String, Long> groupedByWeakness(){
+    /**
+     * Método que se encarga de obtener los pokémons agrupados por debilidad
+     *
+     * @return Los pokémons agrupados por debilidad
+     */
+    public Map<String, Long> groupedByWeakness() {
 
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
 
@@ -184,8 +258,12 @@ public class PokemonController {
     }
 
 
-
-    public double getPokemonAverageHeight(){
+    /**
+     * Método que se encarga de obtener la altura media de los pokémons
+     *
+     * @return La altura media de los pokémons
+     */
+    public double getPokemonAverageHeight() {
 
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
 
@@ -193,8 +271,12 @@ public class PokemonController {
 
     }
 
-
-    public Pokemon getPokemonWithLongestName (){
+    /**
+     * Método que se encarga de obtener el pokémon con el nombre más largo
+     *
+     * @return El pokémon con el nombre más largo
+     */
+    public Pokemon getPokemonWithLongestName() {
 
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
 
@@ -205,8 +287,12 @@ public class PokemonController {
 
     }
 
-
-    public Pokemon getHeaviestPokemon(){
+    /**
+     * Método que se encarga de obtener el pokémon más pesado
+     *
+     * @return El pokémon más pesado
+     */
+    public Pokemon getHeaviestPokemon() {
 
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
 
@@ -215,17 +301,27 @@ public class PokemonController {
     }
 
 
-    public long getNumberOfPokemonsOnlyOneWeakness(){
+    /**
+     * Método que se encarga de obtener el número de pokémons que tienen una debilidad
+     *
+     * @return El número de pokémons que tienen una debilidad
+     */
+    public long getNumberOfPokemonsOnlyOneWeakness() {
 
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
 
-        return pokemons.filter(e-> e.getWeaknesses().size() == 1).count();
+        return pokemons.filter(e -> e.getWeaknesses().size() == 1).count();
 
     }
 
 
-
-    public List<String> getPokemonsByType(String type){
+    /**
+     * Método que se encarga de obtener todos los pokémons de un tipo dado
+     *
+     * @param type Tipo de pokémon
+     * @return Todos los pokémons de un tipo dado
+     */
+    public List<String> getPokemonsByType(String type) {
 
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
 
@@ -234,17 +330,33 @@ public class PokemonController {
     }
 
 
-
-    public List<String> tenFirstPokemons(){
+    /**
+     * Método que se encarga de obtener los 10 primeros pokémons
+     *
+     * @return Los 10 primeros pokémons
+     */
+    public List<String> tenFirstPokemons() {
 
         return pokemonService.getPokemons().stream().limit(10).map(Pokemon::getName).toList();
 
     }
 
-    public List<Pokemon> getPokemonsFromCSV(){
+    /**
+     * Método que se encarga de obtener los 10 últimos pokémons
+     *
+     * @return
+     */
+    public List<Pokemon> getPokemonsFromCSV() {
         return pokemonService.getCSV().orElseThrow();
     }
 
+    /**
+     * Método que se encarga de importar los pokémons de un fichero CSV a la base de datos
+     *
+     * @return Los pokémons importados
+     * @throws SQLException Si hay algún error con la base de datos
+     * @throws IOException  Si hay algún error con el fichero CSV
+     */
     public List<Pokemon> importCsvToDB() throws SQLException, IOException {
 
         List<Pokemon> readedPokemons = getPokemonsFromCSV();
@@ -257,22 +369,46 @@ public class PokemonController {
 
     }
 
-    public List<Pokemon> readAllPokemonsFromDB() throws SQLException, IOException {
+    /**
+     * Método que se encarga de leer todos los pokémons de la base de datos
+     *
+     * @return Todos los pokémons de la base de datos
+     */
+    public List<Pokemon> readAllPokemonsFromDB() {
 
         return pokemonService.findAll();
 
     }
 
-    public Pokemon getPokemonFromDBByName(String name) throws SQLException, IOException {
+    /**
+     * Método que se encarga de leer un pokémon de la base de datos por su nombre
+     *
+     * @param name Nombre del pokémon
+     * @return El pokémon con el nombre dado
+     * @throws SQLException Si hay algún error con la base de datos
+     * @throws IOException  Si hay algún error con el fichero CSV
+     */
+    public Pokemon getPokemonFromDBByName(String name) {
         return pokemonService.findPokemonByName(name).orElseThrow();
     }
 
-    public Optional<Pokemon> getPokemonByName(String name) throws SQLException, IOException {
+    /**
+     * Método que se encarga de leer un pokémon de la base de datos por su nombre
+     *
+     * @param name Nombre del pokémon
+     * @return El pokémon con el nombre dado
+     */
+    public Optional<Pokemon> getPokemonByName(String name) {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons.filter(pokemon -> pokemon.getName().equals(name)).findFirst();
     }
 
-    public Pokemon getPokemonWithLessEvolutions(){
+    /**
+     * Método que se encarga de obtener el pokémon con menos evoluciones
+     *
+     * @return El pokémon con menos evoluciones
+     */
+    public Pokemon getPokemonWithLessEvolutions() {
         Stream<Pokemon> pokemons = pokemonService.getPokemons().stream();
         return pokemons.min(Comparator.comparingInt(pokemon -> pokemon.getNext_evolution().size())).orElse(null);
     }
