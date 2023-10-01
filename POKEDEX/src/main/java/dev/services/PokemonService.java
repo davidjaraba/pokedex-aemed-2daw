@@ -26,6 +26,12 @@ public class PokemonService {
 
     private final DatabaseManager dbManager;
 
+    /**
+     * Constructor de la clase PokemonService
+     *
+     * @param dbManager Objeto de la clase DatabaseManager
+     * @throws FileNotFoundException Excepción que se lanza si no se encuentra el fichero pokemon.json
+     */
     public PokemonService(DatabaseManager dbManager) throws FileNotFoundException {
         this.dbManager = dbManager;
         loadPokedex();
@@ -57,10 +63,18 @@ public class PokemonService {
         }
     }
 
+    /**
+     * Método que devuelve la lista de solo lectura de pokemons
+     *
+     * @return Lista de pokemons (solo lectura)
+     */
     public List<Pokemon> getPokemons() {
         return Collections.unmodifiableList(pokedex.getPokemon());
     }
 
+    /**
+     * Método que exporta la lista de pokemons a un fichero pokemon.csv en la carpeta data
+     */
     public void exportToCSV() {
         String dir = getDataDir();
         String pokemonCsvFile = dir + File.separator + "pokemon.csv";
@@ -81,7 +95,10 @@ public class PokemonService {
         return new GsonBuilder().setPrettyPrinting().registerTypeAdapter(Pokemon.class, pokemonJsonSerializer).create();
     }
 
-    public Optional<List<Pokemon>> getCSV (){
+    /**
+     * Método que importa la lista de pokemons desde un fichero pokemon.csv en la carpeta data
+     */
+    public Optional<List<Pokemon>> getCSV() {
 
         String dir = getDataDir();
         String pokemonCsvFile = dir + File.separator + "pokemon.csv";
@@ -106,6 +123,12 @@ public class PokemonService {
     }
 
 
+    /**
+     * Método que inserta un pokemon en la base de datos
+     *
+     * @param pokemon Pokemon a insertar
+     * @return Pokemon insertado
+     */
     public Optional<Pokemon> insertPokemon(Pokemon pokemon) {
 
         try {
@@ -124,7 +147,13 @@ public class PokemonService {
         }
     }
 
-    public Optional<Pokemon> findPokemonByName(String name) throws SQLException, IOException {
+    /**
+     * Método que busca un pokemon por su nombre de la base de datos
+     *
+     * @param name Nombre del pokemon a buscar
+     * @return Pokemon encontrado
+     */
+    public Optional<Pokemon> findPokemonByName(String name) {
 
         try {
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM pokemon WHERE lower(name) = ?");
@@ -148,7 +177,12 @@ public class PokemonService {
 
     }
 
-    public List<Pokemon> findAll() throws SQLException, IOException {
+    /**
+     * Método que obtiene todos los pokemons de la base de datos
+     *
+     * @return Pokemon encontrado
+     */
+    public List<Pokemon> findAll() {
 
         SqlCommand sqlCommand = new SqlCommand("SELECT * FROM pokemon");
 
@@ -156,7 +190,7 @@ public class PokemonService {
 
         try {
             ResultSet res = dbManager.executeQuery(sqlCommand);
-            while(res.next()){
+            while (res.next()) {
 
                 Pokemon pokemon = new Pokemon();
                 pokemon.setId(res.getInt("id"));
