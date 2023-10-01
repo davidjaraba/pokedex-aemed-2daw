@@ -1,5 +1,5 @@
 # POKEDEX
-![enter image description here](https://camo.githubusercontent.com/7f1f1e69bef239378a28e8aca7d1d7bd0890d37a7871d01135e2d044da6e2157/68747470733a2f2f692e696d6775722e636f6d2f415975745a4f462e706e67)
+![pokedex](https://camo.githubusercontent.com/7f1f1e69bef239378a28e8aca7d1d7bd0890d37a7871d01135e2d044da6e2157/68747470733a2f2f692e696d6775722e636f6d2f415975745a4f462e706e67)
 
 Es un aplicación que lee y almacena en una base de datos H2 una serie de pokemons leídos de un fichero .json, también permite obtener una serie de datos procesando los obtenido del JSON.
 
