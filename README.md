@@ -1,1 +1,2 @@
-# pokedex-aemed-2daw
+# [Proyecto 01 - Pokédex](POKEDEX)
+# [Proyecto 02 - AEMET](AEMED)
