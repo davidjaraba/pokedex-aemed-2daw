@@ -1,2 +1,2 @@
-# [Proyecto 01 - Pokédex](pokedex)
+# [Proyecto 01 - Pokédex](POKEDEX)
 # [Proyecto 02 - AEMET](AEMED)
